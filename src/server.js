@@ -36,6 +36,14 @@ function sendText(response, statusCode, text) {
   response.end(text);
 }
 
+function sendRedirect(response, location) {
+  response.writeHead(308, {
+    Location: location,
+    "Cache-Control": "no-store",
+  });
+  response.end();
+}
+
 function safePublicPath(urlPathname) {
   const decoded = decodeURIComponent(urlPathname);
   const cleanPath = decoded === "/" ? "/index.html" : decoded.endsWith("/") ? `${decoded}index.html` : decoded;
@@ -46,6 +54,28 @@ function safePublicPath(urlPathname) {
   }
 
   return resolved;
+}
+
+async function maybeRedirectDirectory(response, url) {
+  if (url.pathname === "/" || url.pathname.endsWith("/") || path.extname(url.pathname)) {
+    return false;
+  }
+
+  const filePath = safePublicPath(url.pathname);
+  if (!filePath) return false;
+
+  try {
+    const stats = await fs.stat(filePath);
+
+    if (stats.isDirectory()) {
+      sendRedirect(response, `${url.pathname}/${url.search}`);
+      return true;
+    }
+  } catch {
+    // Missing files are handled by serveStatic so they return a normal 404.
+  }
+
+  return false;
 }
 
 async function serveStatic(request, response, pathname) {
@@ -65,6 +95,11 @@ async function serveStatic(request, response, pathname) {
     response.end(body);
   } catch (error) {
     if (error.code === "ENOENT") {
+      sendText(response, 404, "Not found");
+      return;
+    }
+
+    if (error.code === "EISDIR") {
       sendText(response, 404, "Not found");
       return;
     }
@@ -108,6 +143,10 @@ async function handleRequest(request, response) {
 
       const result = await runScan("manual", { ignoreWindow: true });
       sendJson(response, result.ok ? 200 : 502, result);
+      return;
+    }
+
+    if (await maybeRedirectDirectory(response, url)) {
       return;
     }
 
