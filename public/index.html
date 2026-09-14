@@ -24,9 +24,8 @@
       href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="warbirds.css" />
-    <link rel="stylesheet" href="profile-links.css" />
-    <link rel="stylesheet" href="notification-cta.css" />
+    <link rel="stylesheet" href="/warbirds.css" />
+    <link rel="stylesheet" href="/notification-cta.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -34,15 +33,16 @@
         <a class="brand" href="/" aria-label="Warbird Watch home">Warbird Watch</a>
         <nav class="top-links" aria-label="Project navigation">
           <a href="/history/">History</a>
+          <a href="/watchlist/">Watchlist</a>
         </nav>
       </header>
 
       <main>
-        <section class="hero" aria-labelledby="page-title">
+        <section class="hero compact-hero" aria-labelledby="page-title">
           <p class="eyebrow">Hamilton historic aircraft tracker</p>
           <h1 id="page-title">Warbird Watch</h1>
           <p class="hero-text">
-            Live activity for historic aircraft around Hamilton. Discord alerts go out when one looks airborne.
+            Live activity for historic aircraft around Hamilton. Alerts go out when one looks airborne.
           </p>
         </section>
 
@@ -94,29 +94,6 @@
             <a href="https://discord.gg/AQj2BFPA6s" target="_blank" rel="noopener noreferrer">Join Discord</a>
           </div>
         </section>
-
-        <section id="watchlist" class="watchlist-section" aria-labelledby="watchlist-title">
-          <div class="section-heading roster-heading">
-            <div>
-              <p class="eyebrow">Watchlist</p>
-              <h2 id="watchlist-title">Tracked aircraft</h2>
-            </div>
-            <p class="section-copy">Click any aircraft to learn more.</p>
-          </div>
-
-          <div class="manifest-list">
-            <article><code>C-GVRA</code><strong>Lancaster FM213</strong><span>Avro Lancaster Mk. X</span><a class="profile-link" href="https://www.warplane.com/aircraft/collection/details.aspx?aircraftId=4" target="_blank" rel="noopener noreferrer">Museum profile for Lancaster FM213</a></article>
-            <article><code>C-GRSB</code><strong>Dakota FZ692</strong><span>Douglas C-47 Dakota</span><a class="profile-link" href="https://www.warplane.com/aircraft/collection/details.aspx?aircraftId=54" target="_blank" rel="noopener noreferrer">Museum profile for Dakota FZ692</a></article>
-            <article><code>CF-GTU</code><strong>Tiger Moth</strong><span>de Havilland Tiger Moth</span><a class="profile-link" href="https://www.warplane.com/aircraft/collection/details.aspx?aircraftId=65" target="_blank" rel="noopener noreferrer">Museum profile for Tiger Moth</a></article>
-            <article><code>C-GCWG</code><strong>Grumman Avenger</strong><span>Grumman Avenger</span><a class="profile-link" href="https://www.warplane.com/aircraft/collection/details.aspx?aircraftId=39" target="_blank" rel="noopener noreferrer">Museum profile for Grumman Avenger</a></article>
-            <article><code>CF-GSR</code><strong>Norseman</strong><span>Noorduyn Norseman</span><a class="profile-link" href="https://www.warplane.com/aircraft/collection/details.aspx?aircraftId=55" target="_blank" rel="noopener noreferrer">Museum profile for Norseman</a></article>
-            <article><code>C-GCWM</code><strong>B-25 Mitchell</strong><span>North American B-25 Mitchell</span><a class="profile-link" href="https://www.warplane.com/aircraft/collection/details.aspx?aircraftId=32" target="_blank" rel="noopener noreferrer">Museum profile for B-25 Mitchell</a></article>
-            <article><code>C-FPQL</code><strong>Canso</strong><span>Consolidated Canso</span><a class="profile-link" href="https://www.warplane.com/aircraft/collection/details.aspx?aircraftId=11" target="_blank" rel="noopener noreferrer">Museum profile for Canso</a></article>
-            <article><code>C-FAIU</code><strong>Stearman</strong><span>Boeing Stearman</span><a class="profile-link" href="https://www.warplane.com/aircraft/collection/details.aspx?aircraftId=6" target="_blank" rel="noopener noreferrer">Museum profile for Stearman</a></article>
-            <article><code>CF-UUU</code><strong>Harvard</strong><span>North American Harvard</span><a class="profile-link" href="https://www.warplane.com/aircraft/collection/details.aspx?aircraftId=31" target="_blank" rel="noopener noreferrer">Museum profile for Harvard</a></article>
-            <article><code>C-GBDG</code><strong>Fairey Firefly</strong><span>Fairey Firefly</span><a class="profile-link" href="https://www.warplane.com/aircraft/collection/details.aspx?aircraftId=18" target="_blank" rel="noopener noreferrer">Museum profile for Fairey Firefly</a></article>
-          </div>
-        </section>
       </main>
 
       <footer>
@@ -124,6 +101,6 @@
       </footer>
     </div>
 
-    <script src="warbirds.js"></script>
+    <script src="/warbirds.js"></script>
   </body>
 </html>
