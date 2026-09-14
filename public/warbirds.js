@@ -1,4 +1,5 @@
 const api = "/api/public";
+const historyApi = "/api/history";
 const autoRefreshMs = 60 * 1000;
 
 const status = document.querySelector("#fetchStatus");
@@ -8,6 +9,7 @@ const statusDot = document.querySelector("#statusDot");
 const systemStatus = document.querySelector("#systemStatus");
 const lastCheckedValue = document.querySelector("#lastCheckedValue");
 const activeValue = document.querySelector("#activeValue");
+const lastActivityValue = document.querySelector("#lastActivityValue");
 const trackedValue = document.querySelector("#trackedValue");
 const providerValue = document.querySelector("#providerValue");
 
@@ -139,6 +141,52 @@ function getActive(payload) {
       : [];
 }
 
+function scanActivities(scan) {
+  const rawActivities = Array.isArray(scan?.activity)
+    ? scan.activity
+    : Array.isArray(scan?.activities)
+      ? scan.activities
+      : [];
+
+  return rawActivities
+    .map((item) => {
+      const type = String(item?.type ?? item?.event ?? "").toLowerCase();
+
+      return {
+        type,
+        aircraft:
+          item?.label ||
+          item?.aircraft ||
+          item?.registration ||
+          "Watched aircraft",
+        at: item?.at || scan?.at || scan?.timestamp || null,
+      };
+    })
+    .filter((item) => item.type === "detected" || item.type === "airborne");
+}
+
+function updateLastActivity(payload) {
+  const scans = Array.isArray(payload?.scans)
+    ? payload.scans
+    : Array.isArray(payload?.history)
+      ? payload.history
+      : [];
+
+  const activities = scans
+    .flatMap(scanActivities)
+    .sort((first, second) => Date.parse(second.at) - Date.parse(first.at));
+
+  const latest = activities[0];
+
+  if (!latest) {
+    setText(lastActivityValue, "None in 7 days");
+    return;
+  }
+
+  const action = latest.type === "airborne" ? "airborne" : "detected";
+  setText(lastActivityValue, `${latest.aircraft} ${action} · ${since(latest.at)}`);
+}
+
 function render(payload) {
   const active = getActive(payload);
 
@@ -185,6 +233,21 @@ function updateSummary(data) {
   status.textContent = `${count} tracked · last scan ${formatExactTime(checkedAt)} · page updates every min`;
 }
 
+async function loadHistorySnapshot() {
+  try {
+    const response = await window.fetch(historyApi, { cache: "no-store" });
+    if (!response.ok) throw new Error(`History returned ${response.status}`);
+
+    const data = await response.json();
+    if (!data.ok) throw new Error(data.error || "Invalid history response");
+
+    updateLastActivity(data);
+  } catch (error) {
+    console.warn("Warbird Watch history snapshot failed", error);
+    setText(lastActivityValue, "Unavailable");
+  }
+}
+
 async function load() {
   if (isLoading) return;
 
@@ -203,10 +266,12 @@ async function load() {
 
     render(data);
     updateSummary(data);
+    loadHistorySnapshot();
   } catch (error) {
     console.error("Warbird Watch live status failed", error);
     setSystem("error", "Offline");
     setText(lastCheckedValue, "Unavailable");
+    setText(lastActivityValue, "Unavailable");
     empty(
       "Live board unavailable",
       "The status feed could not be reached just now. It will try again automatically.",
