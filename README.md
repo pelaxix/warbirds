@@ -30,8 +30,9 @@ warbirds.pelaxix.com {
 
 ## Notes
 
-- The scanner uses ADSB One by default.
-- The default scan interval is 2 minutes.
-- Scheduled scans run from 8 AM to 11 PM Hamilton time.
+- The scanner uses adsb.fi Open Data by default.
+- The default scan interval is 1 minute.
+- Scheduled scans run 24/7 by default.
+- To restore an active-hours window later, set `ACTIVE_HOURS_ONLY=true` and configure `ACTIVE_START_HOUR` / `ACTIVE_END_HOUR`.
 - Runtime state is stored locally in `data/state.json`.
 - Private values go in `.env`, which is ignored by git.
