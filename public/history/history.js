@@ -2,15 +2,13 @@ const historyEndpoint = "/api/history";
 const activityFilter = document.querySelector("#activityFilter");
 const historyStatus = document.querySelector("#historyStatus");
 const historyList = document.querySelector("#historyList");
+const scanCountValue = document.querySelector("#scanCountValue");
+const activityCountValue = document.querySelector("#activityCountValue");
 const autoRefreshMs = 60 * 1000;
 
 let showActivityOnly = false;
 let allScans = [];
 let isLoading = false;
-
-// Warbird Watch is intentionally standalone: navigation stays inside the project.
-document.querySelector(".site-header")?.remove();
-document.querySelector("footer a")?.remove();
 
 function getScanTime(scan) {
   return scan.at || scan.timestamp || null;
@@ -19,19 +17,11 @@ function getScanTime(scan) {
 function formatTimestamp(value) {
   const date = new Date(value);
 
-  if (Number.isNaN(date.getTime())) {
-    return "Unknown time";
-  }
+  if (Number.isNaN(date.getTime())) return "Unknown time";
 
-  const year = new Intl.DateTimeFormat(undefined, {
-    year: "numeric",
-  }).format(date);
-  const month = new Intl.DateTimeFormat(undefined, {
-    month: "2-digit",
-  }).format(date);
-  const day = new Intl.DateTimeFormat(undefined, {
-    day: "2-digit",
-  }).format(date);
+  const year = new Intl.DateTimeFormat(undefined, { year: "numeric" }).format(date);
+  const month = new Intl.DateTimeFormat(undefined, { month: "2-digit" }).format(date);
+  const day = new Intl.DateTimeFormat(undefined, { day: "2-digit" }).format(date);
   const time = new Intl.DateTimeFormat(undefined, {
     hour: "numeric",
     minute: "2-digit",
@@ -78,21 +68,23 @@ function hasActivity(scan) {
 }
 
 function scanKind(scan) {
-  if (scan.error) {
-    return "error";
-  }
+  if (scan.error) return "error";
 
   const activities = scanActivities(scan);
 
-  if (activities.some((item) => item.type === "airborne")) {
-    return "airborne";
-  }
-
-  if (activities.length) {
-    return "detected";
-  }
+  if (activities.some((item) => item.type === "airborne")) return "airborne";
+  if (activities.length) return "detected";
 
   return "quiet";
+}
+
+function scanTag(scan) {
+  const kind = scanKind(scan);
+
+  if (kind === "airborne") return "Airborne";
+  if (kind === "detected") return "Detected";
+  if (kind === "error") return "Error";
+  return "Quiet";
 }
 
 function showEmpty(title, description) {
@@ -114,9 +106,7 @@ function showEmpty(title, description) {
 
 function appendActivityMessage(message, activities) {
   activities.forEach((activity, index) => {
-    if (index > 0) {
-      message.append(document.createTextNode(" · "));
-    }
+    if (index > 0) message.append(document.createTextNode(" · "));
 
     message.append(document.createTextNode(`${activity.aircraft} `));
 
@@ -132,7 +122,7 @@ function appendScanMessage(message, scan) {
     const status = document.createElement("span");
     status.className = "status-word error";
     status.textContent = "Scan error";
-    message.append(status, document.createTextNode(` · ${scan.error}`));
+    message.append(status, document.createTextNode(` · ${String(scan.error).slice(0, 180)}`));
     return;
   }
 
@@ -164,17 +154,24 @@ function appendScanMessage(message, scan) {
   message.append(status);
 }
 
+function updateSummary() {
+  const activityCount = allScans.reduce((total, scan) => total + scanActivities(scan).length, 0);
+
+  scanCountValue.textContent = String(allScans.length);
+  activityCountValue.textContent = String(activityCount);
+}
+
 function render() {
-  const scans = showActivityOnly
-    ? allScans.filter(hasActivity)
-    : allScans;
+  const scans = showActivityOnly ? allScans.filter(hasActivity) : allScans;
+
+  updateSummary();
 
   if (!scans.length) {
     showEmpty(
       showActivityOnly ? "No activity in this window" : "No scans recorded yet",
       showActivityOnly
         ? "Try showing all scans, or check back after an aircraft is detected."
-        : "The first completed scheduled scan will appear here.",
+        : "The first completed scan will appear here.",
     );
     return;
   }
@@ -185,6 +182,7 @@ function render() {
     const row = document.createElement("article");
     const time = document.createElement("time");
     const message = document.createElement("p");
+    const tag = document.createElement("span");
 
     row.className = `scan-row ${scanKind(scan)}`;
     time.className = "scan-time";
@@ -194,7 +192,10 @@ function render() {
     message.className = "scan-message";
     appendScanMessage(message, scan);
 
-    row.append(time, message);
+    tag.className = "scan-tag";
+    tag.textContent = scanTag(scan);
+
+    row.append(time, message, tag);
     fragment.append(row);
   });
 
@@ -202,9 +203,7 @@ function render() {
 }
 
 async function loadHistory() {
-  if (isLoading) {
-    return;
-  }
+  if (isLoading) return;
 
   isLoading = true;
   historyStatus.textContent = "Reading the last 48 hours of scans…";
@@ -212,15 +211,11 @@ async function loadHistory() {
   try {
     const response = await fetch(historyEndpoint, { cache: "no-store" });
 
-    if (!response.ok) {
-      throw new Error(`History returned ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`History returned ${response.status}`);
 
     const payload = await response.json();
 
-    if (!payload.ok) {
-      throw new Error(payload.error || "Invalid history response");
-    }
+    if (!payload.ok) throw new Error(payload.error || "Invalid history response");
 
     allScans = Array.isArray(payload.scans)
       ? payload.scans
@@ -229,22 +224,23 @@ async function loadHistory() {
         : [];
 
     allScans.sort(
-      (first, second) =>
-        Date.parse(getScanTime(second)) - Date.parse(getScanTime(first)),
+      (first, second) => Date.parse(getScanTime(second)) - Date.parse(getScanTime(first)),
     );
 
     render();
 
     historyStatus.textContent = allScans.length
-      ? `${allScans.length} scan${allScans.length === 1 ? "" : "s"} recorded · last 48 hours · updates every min`
-      : "No scans recorded yet · checks every min";
+      ? `${allScans.length} scan${allScans.length === 1 ? "" : "s"} recorded · last 48 hours · page updates every min`
+      : "No scans recorded yet · page updates every min";
   } catch (error) {
     console.error("Could not load scan history", error);
     showEmpty(
       "Scan history is not online yet",
-      "The history page is ready. The Worker needs its scan-log update before entries can appear here.",
+      "The history page is ready, but the local API could not be reached just now.",
     );
-    historyStatus.textContent = "Waiting for the scan-log update · retrying every min";
+    scanCountValue.textContent = "—";
+    activityCountValue.textContent = "—";
+    historyStatus.textContent = "Waiting for the local API · retrying every min";
   } finally {
     isLoading = false;
   }
@@ -259,15 +255,11 @@ activityFilter.addEventListener("click", () => {
 });
 
 window.setInterval(() => {
-  if (!document.hidden) {
-    loadHistory();
-  }
+  if (!document.hidden) loadHistory();
 }, autoRefreshMs);
 
 document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) {
-    loadHistory();
-  }
+  if (!document.hidden) loadHistory();
 });
 
 loadHistory();
