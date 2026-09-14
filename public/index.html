@@ -44,44 +44,6 @@
           <p class="hero-text">
             Live activity for historic aircraft around Hamilton. Discord alerts go out when one looks airborne.
           </p>
-          <div class="hero-actions">
-            <button id="refreshButton" class="button primary" type="button">Refresh</button>
-            <a class="button secondary" href="/history/">History</a>
-          </div>
-        </section>
-
-        <section class="status-grid" aria-label="Watcher summary">
-          <article class="status-card status-card-main">
-            <span class="status-dot" id="statusDot"></span>
-            <div>
-              <span class="status-label">System</span>
-              <strong id="systemStatus">Starting up</strong>
-            </div>
-          </article>
-          <article class="status-card">
-            <span class="status-label">Active now</span>
-            <strong id="activeValue">0</strong>
-          </article>
-          <article class="status-card">
-            <span class="status-label">Last scan</span>
-            <strong id="lastCheckedValue">Waiting</strong>
-          </article>
-          <article class="status-card status-card-wide">
-            <span class="status-label">Last activity</span>
-            <strong id="lastActivityValue">Waiting</strong>
-          </article>
-          <article class="status-card">
-            <span class="status-label">Tracked</span>
-            <strong id="trackedValue">10</strong>
-          </article>
-          <article class="status-card">
-            <span class="status-label">Source</span>
-            <strong id="providerValue">adsb.fi</strong>
-          </article>
-          <article class="status-card">
-            <span class="status-label">Cadence</span>
-            <strong>1 min</strong>
-          </article>
         </section>
 
         <section class="live-board" aria-labelledby="live-title">
@@ -92,6 +54,17 @@
             </div>
             <p id="fetchStatus" class="fetch-status" role="status">Checking the live board…</p>
           </div>
+
+          <div class="status-strip" aria-label="Tracker summary">
+            <span class="status-dot" id="statusDot"></span>
+            <strong id="systemStatus">Starting up</strong>
+            <span><strong id="activeValue">0</strong> active</span>
+            <span>Last scan: <strong id="lastCheckedValue">Waiting</strong></span>
+          </div>
+
+          <p class="last-activity-line">
+            Last activity: <strong id="lastActivityValue">Waiting</strong>
+          </p>
 
           <div class="live-key" aria-label="Live data legend">
             <span><i class="key-dot airborne-dot"></i> Airborne</span>
