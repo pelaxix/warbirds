@@ -1,0 +1,64 @@
+.brand {
+  font-size: clamp(2rem, 4.4vw, 3.35rem);
+  line-height: 0.92;
+  letter-spacing: -0.07em;
+}
+
+.topbar {
+  min-height: auto;
+  padding: 28px 0 24px;
+}
+
+.intro-line {
+  padding: 22px 0 22px;
+}
+
+.intro-line p {
+  max-width: 720px;
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(1.06rem, 1.85vw, 1.32rem);
+  line-height: 1.55;
+}
+
+.live-board {
+  margin-top: 0;
+}
+
+.live-board h1 {
+  margin: 0;
+  font-size: clamp(2.65rem, 5.2vw, 4.15rem);
+  line-height: 0.92;
+  letter-spacing: -0.075em;
+}
+
+.live-board .section-heading {
+  align-items: start;
+}
+
+.fetch-status {
+  padding-top: 48px;
+}
+
+footer {
+  padding-top: 4px;
+}
+
+@media (max-width: 760px) {
+  .brand {
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+
+  .topbar {
+    gap: 14px;
+    padding: 24px 0 18px;
+  }
+
+  .intro-line {
+    padding: 18px 0;
+  }
+
+  .fetch-status {
+    padding-top: 0;
+  }
+}
