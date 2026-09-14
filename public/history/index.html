@@ -12,44 +12,52 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/project-nav.css" />
     <link rel="stylesheet" href="history.css" />
   </head>
   <body>
     <div class="app-shell">
-      <header class="site-header">
-        <a class="logo" href="/" aria-label="Pelaxix home">
-          <span class="logo-mark">P</span>
-          <span>Pelaxix</span>
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Hamilton Warbird Watch home">
+          <span class="brand-mark">✈</span>
+          <span>Hamilton Warbird Watch</span>
         </a>
-        <a class="back-link" href="/">← Warbird Watch</a>
+        <nav class="top-links" aria-label="Project navigation">
+          <a href="/">Live board</a>
+          <a href="https://discord.gg/UKvVMMUG8" target="_blank" rel="noopener noreferrer">Discord</a>
+        </nav>
       </header>
 
       <main>
         <section class="hero">
-          <p class="eyebrow">Hamilton Warbird Watch</p>
-          <h1>Scan history.</h1>
-          <p class="hero-copy">
-            Every completed tracker scan from the last 48 hours. Quiet scans are included so the log can show exactly when the watcher checked.
-          </p>
+          <div>
+            <p class="eyebrow">Last 48 hours</p>
+            <h1>Scan history.</h1>
+            <p class="hero-copy">
+              Every completed tracker scan from the last 48 hours. Quiet scans are included so the log shows exactly when the watcher checked.
+            </p>
+          </div>
           <div class="hero-actions">
             <a class="button secondary" href="/">Live board</a>
-            <button id="activityFilter" class="button secondary" type="button" aria-pressed="false">
-              Activity only
-            </button>
+            <button id="activityFilter" class="button secondary" type="button" aria-pressed="false">Activity only</button>
           </div>
         </section>
 
         <section class="history-panel" aria-labelledby="history-title">
           <div class="history-heading">
             <div>
-              <p class="eyebrow">Last 48 hours</p>
+              <p class="eyebrow">Timeline</p>
               <h2 id="history-title">Recent scans</h2>
             </div>
             <p id="historyStatus" class="history-status" role="status">Loading scan history…</p>
+          </div>
+
+          <div class="history-summary" aria-label="History summary">
+            <article><span>Scans</span><strong id="scanCountValue">0</strong></article>
+            <article><span>Activities</span><strong id="activityCountValue">0</strong></article>
+            <article><span>Window</span><strong>48 hours</strong></article>
           </div>
 
           <div id="historyList" class="history-list" aria-live="polite">
@@ -65,8 +73,8 @@
       </main>
 
       <footer>
-        <p>History begins once the scan-log update is live. Times are shown in your device’s local time.</p>
-        <a href="/">Back to Warbird Watch</a>
+        <p>Times are shown in your device’s local time. ADS-B data can be delayed, incomplete, or unavailable.</p>
+        <a href="/">Back to live board</a>
       </footer>
     </div>
 
