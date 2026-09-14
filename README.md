@@ -33,6 +33,7 @@ warbirds.pelaxix.com {
 - The scanner uses adsb.fi Open Data by default.
 - The default scan interval is 1 minute.
 - Scheduled scans run 24/7 by default.
+- The history window keeps 7 days by default, with room for about 12,000 scan records.
 - To restore an active-hours window later, set `ACTIVE_HOURS_ONLY=true` and configure `ACTIVE_START_HOUR` / `ACTIVE_END_HOUR`.
 - Runtime state is stored locally in `data/state.json`.
 - Private values go in `.env`, which is ignored by git.
