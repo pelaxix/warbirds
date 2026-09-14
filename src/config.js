@@ -44,6 +44,14 @@ function boolEnv(name, fallback) {
   return fallback;
 }
 
+function envAny(...names) {
+  for (const name of names) {
+    const value = process.env[name];
+    if (value !== undefined && value !== "") return value;
+  }
+  return "";
+}
+
 export const WATCHED_AIRCRAFT = [
   { registration: "C-GVRA", name: "Avro Lancaster Mk. X", label: "Lancaster FM213" },
   { registration: "C-GRSB", name: "Douglas C-47 Dakota", label: "Dakota FZ692" },
@@ -65,8 +73,8 @@ export const config = Object.freeze({
   adsbOneBaseUrl: process.env.ADSB_ONE_BASE_URL || "https://api.adsb.one",
   scanIntervalMs: intEnv("SCAN_INTERVAL_SECONDS", 120) * 1000,
   startScanner: boolEnv("START_SCANNER", true),
-  discordWebhookUrl: process.env.DISCORD_WEBHOOK_URL || "",
-  manualCheckToken: process.env.MANUAL_CHECK_TOKEN || "",
+  discordWebhookUrl: envAny("DISCORD_WEBHOOK_URL", "DISCORD_WEBHOOK"),
+  manualCheckToken: envAny("MANUAL_CHECK_TOKEN", "CHECK_TOKEN"),
   activeTimezone: process.env.ACTIVE_TIMEZONE || "America/Toronto",
   activeStartHour: intEnv("ACTIVE_START_HOUR", 8),
   activeEndHourExclusive: intEnv("ACTIVE_END_HOUR", 23),
