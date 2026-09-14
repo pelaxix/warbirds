@@ -70,7 +70,7 @@ export const config = Object.freeze({
   port: intEnv("PORT", 3007),
   publicBaseUrl: process.env.PUBLIC_BASE_URL || "https://warbirds.pelaxix.com",
   dataDir: process.env.DATA_DIR || path.join(rootDir, "data"),
-  adsbOneBaseUrl: process.env.ADSB_ONE_BASE_URL || "https://api.adsb.one",
+  adsbOneBaseUrl: envAny("ADSB_FI_BASE_URL", "ADSB_ONE_BASE_URL") || "https://opendata.adsb.fi/api",
   scanIntervalMs: intEnv("SCAN_INTERVAL_SECONDS", 120) * 1000,
   startScanner: boolEnv("START_SCANNER", true),
   discordWebhookUrl: envAny("DISCORD_WEBHOOK_URL", "DISCORD_WEBHOOK"),
