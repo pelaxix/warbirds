@@ -7,8 +7,8 @@
       name="description"
       content="A live personal watchlist for historic aircraft associated with Hamilton's Canadian Warplane Heritage Museum."
     />
-    <meta property="og:site_name" content="Hamilton Warbird Watch" />
-    <meta property="og:title" content="Hamilton Warbird Watch" />
+    <meta property="og:site_name" content="Warbird Watch" />
+    <meta property="og:title" content="Warbird Watch" />
     <meta
       property="og:description"
       content="Live activity, scan history, and Discord alerts for historic aircraft around Hamilton."
@@ -16,7 +16,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://warbirds.pelaxix.com/" />
     <meta name="twitter:card" content="summary" />
-    <title>Hamilton Warbird Watch</title>
+    <title>Warbird Watch</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,47 +30,23 @@
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <a class="brand" href="/" aria-label="Hamilton Warbird Watch home">
-          <span class="brand-mark">✈</span>
-          <span>Hamilton Warbird Watch</span>
-        </a>
+        <a class="brand" href="/" aria-label="Warbird Watch home">Warbird Watch</a>
         <nav class="top-links" aria-label="Project navigation">
-          <a href="/history/">Scan history</a>
-          <a href="#watchlist">Tracked aircrafts</a>
+          <a href="/history/">History</a>
+          <a href="https://discord.gg/AQj2BFPA6s" target="_blank" rel="noopener noreferrer">Discord</a>
         </nav>
       </header>
 
       <main>
         <section class="hero" aria-labelledby="page-title">
-          <div class="hero-copy">
-            <p class="eyebrow">Live ADS-B watchlist</p>
-            <h1 id="page-title">Warbird Watch.</h1>
-            <p class="hero-text">
-              Live activity for historic aircraft around Hamilton. Discord alerts go out when one looks airborne.
-            </p>
-            <div class="hero-actions">
-              <button id="refreshButton" class="button primary" type="button">Refresh board</button>
-              <a class="button secondary" href="/history/">Scan history</a>
-              <a class="button secondary" href="https://discord.gg/AQj2BFPA6s" target="_blank" rel="noopener noreferrer">Join Discord</a>
-            </div>
-          </div>
-
-          <div class="radar-panel" aria-hidden="true">
-            <div class="radar-label">Hamilton area watch</div>
-            <div class="radar-face">
-              <span class="radar-ring ring-one"></span>
-              <span class="radar-ring ring-two"></span>
-              <span class="radar-ring ring-three"></span>
-              <span class="radar-sweep"></span>
-              <span class="radar-line"></span>
-              <span class="radar-blip blip-one"></span>
-              <span class="radar-blip blip-two"></span>
-              <span class="radar-plane">✈</span>
-            </div>
-            <div class="radar-footer">
-              <span>Data source</span>
-              <strong id="providerValue">adsb.fi</strong>
-            </div>
+          <p class="eyebrow">Hamilton historic aircraft tracker</p>
+          <h1 id="page-title">Warbird Watch</h1>
+          <p class="hero-text">
+            Live activity for historic aircraft around Hamilton. Discord alerts go out when one looks airborne.
+          </p>
+          <div class="hero-actions">
+            <button id="refreshButton" class="button primary" type="button">Refresh</button>
+            <a class="button secondary" href="/history/">History</a>
           </div>
         </section>
 
@@ -83,12 +59,12 @@
             </div>
           </article>
           <article class="status-card">
-            <span class="status-label">Last scan</span>
-            <strong id="lastCheckedValue">Waiting</strong>
-          </article>
-          <article class="status-card">
             <span class="status-label">Active now</span>
             <strong id="activeValue">0</strong>
+          </article>
+          <article class="status-card">
+            <span class="status-label">Last scan</span>
+            <strong id="lastCheckedValue">Waiting</strong>
           </article>
           <article class="status-card status-card-wide">
             <span class="status-label">Last activity</span>
@@ -99,8 +75,12 @@
             <strong id="trackedValue">10</strong>
           </article>
           <article class="status-card">
+            <span class="status-label">Source</span>
+            <strong id="providerValue">adsb.fi</strong>
+          </article>
+          <article class="status-card">
             <span class="status-label">Cadence</span>
-            <strong>1 min scans</strong>
+            <strong>1 min</strong>
           </article>
         </section>
 
@@ -108,7 +88,7 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">Live board</p>
-              <h2 id="live-title">What the tracker last saw.</h2>
+              <h2 id="live-title">Current status</h2>
             </div>
             <p id="fetchStatus" class="fetch-status" role="status">Checking the live board…</p>
           </div>
@@ -129,19 +109,18 @@
             </article>
           </div>
 
-          <div class="board-footer">
-            <p>A quiet board means no watched aircraft were recently reported by the tracker. It does not prove an aircraft is grounded or unavailable.</p>
-            <a href="https://discord.gg/AQj2BFPA6s" target="_blank" rel="noopener noreferrer">Discord alerts →</a>
-          </div>
+          <p class="small-note">
+            A quiet board means no watched aircraft were recently reported by the tracker. It does not prove an aircraft is grounded or unavailable.
+          </p>
         </section>
 
         <section id="watchlist" class="watchlist-section" aria-labelledby="watchlist-title">
           <div class="section-heading roster-heading">
             <div>
               <p class="eyebrow">Watchlist</p>
-              <h2 id="watchlist-title">Tracked aircrafts</h2>
+              <h2 id="watchlist-title">Tracked aircraft</h2>
             </div>
-            <p class="section-copy">Checked every minute, 24/7. Click any aircraft to open its museum profile.</p>
+            <p class="section-copy">Click any aircraft to learn more.</p>
           </div>
 
           <div class="manifest-list">
@@ -161,7 +140,6 @@
 
       <footer>
         <p>Personal aviation project. Live ADS-B data can be delayed, incomplete, or unavailable.</p>
-        <a href="/history/">Open scan history</a>
       </footer>
     </div>
 
