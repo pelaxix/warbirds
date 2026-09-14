@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="The last 48 hours of Hamilton Warbird Watch scans."
+      content="The last 7 days of Hamilton Warbird Watch scans and aircraft activity."
     />
     <title>Scan History · Hamilton Warbird Watch</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -33,15 +33,15 @@
       <main>
         <section class="hero">
           <div>
-            <p class="eyebrow">Last 48 hours</p>
+            <p class="eyebrow">Last 7 days</p>
             <h1>Scan history.</h1>
             <p class="hero-copy">
-              Every completed tracker scan from the last 48 hours. Quiet scans are included so the log shows exactly when the watcher checked.
+              Aircraft activity is shown first by default, so you do not have to dig through quiet scans. Use the toggle to inspect the full minute-by-minute log.
             </p>
           </div>
           <div class="hero-actions">
             <a class="button secondary" href="/">Live board</a>
-            <button id="activityFilter" class="button secondary" type="button" aria-pressed="false">Activity only</button>
+            <button id="activityFilter" class="button secondary is-active" type="button" aria-pressed="true">Show all scans</button>
           </div>
         </section>
 
@@ -57,7 +57,7 @@
           <div class="history-summary" aria-label="History summary">
             <article><span>Scans</span><strong id="scanCountValue">0</strong></article>
             <article><span>Activities</span><strong id="activityCountValue">0</strong></article>
-            <article><span>Window</span><strong>48 hours</strong></article>
+            <article><span>Window</span><strong>7 days</strong></article>
           </div>
 
           <div id="historyList" class="history-list" aria-live="polite">
