@@ -7,7 +7,7 @@
       name="description"
       content="The last 7 days of Hamilton Warbird Watch scans and aircraft activity."
     />
-    <title>Scan History · Hamilton Warbird Watch</title>
+    <title>History · Warbird Watch</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,10 +20,7 @@
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <a class="brand" href="/" aria-label="Hamilton Warbird Watch home">
-          <span class="brand-mark">✈</span>
-          <span>Hamilton Warbird Watch</span>
-        </a>
+        <a class="brand" href="/" aria-label="Warbird Watch home">Warbird Watch</a>
         <nav class="top-links" aria-label="Project navigation">
           <a href="/">Live board</a>
           <a href="https://discord.gg/AQj2BFPA6s" target="_blank" rel="noopener noreferrer">Discord</a>
@@ -32,13 +29,11 @@
 
       <main>
         <section class="hero">
-          <div>
-            <p class="eyebrow">Last 7 days</p>
-            <h1>Scan history.</h1>
-            <p class="hero-copy">
-              Aircraft activity is shown first by default, so you do not have to dig through quiet scans. Use the toggle to inspect the full minute-by-minute log.
-            </p>
-          </div>
+          <p class="eyebrow">Last 7 days</p>
+          <h1>History</h1>
+          <p class="hero-copy">
+            Aircraft activity is shown first. Use the toggle to see every quiet scan too.
+          </p>
           <div class="hero-actions">
             <a class="button secondary" href="/">Live board</a>
             <button id="activityFilter" class="button secondary is-active" type="button" aria-pressed="true">Show all scans</button>
@@ -49,7 +44,7 @@
           <div class="history-heading">
             <div>
               <p class="eyebrow">Timeline</p>
-              <h2 id="history-title">Recent scans</h2>
+              <h2 id="history-title">Recent activity</h2>
             </div>
             <p id="historyStatus" class="history-status" role="status">Loading scan history…</p>
           </div>
@@ -65,7 +60,7 @@
               <span class="empty-icon">⌁</span>
               <div>
                 <h3>Loading scans</h3>
-                <p>The tracker’s recent scan log is on its way.</p>
+                <p>The recent scan log is on its way.</p>
               </div>
             </article>
           </div>
@@ -74,7 +69,6 @@
 
       <footer>
         <p>Times are shown in your device’s local time. ADS-B data can be delayed, incomplete, or unavailable.</p>
-        <a href="/">Back to live board</a>
       </footer>
     </div>
 
