@@ -84,7 +84,7 @@ function insideActiveWindow(date = new Date()) {
 }
 
 function routeUrl(hex) {
-  return hex ? `https://globe.adsb.one/?icao=${encodeURIComponent(hex)}` : null;
+  return hex ? `https://globe.adsb.fi/?icao=${encodeURIComponent(hex)}` : null;
 }
 
 function createLiveMatch(watched, aircraft, providerNow) {
