@@ -7,50 +7,96 @@
       name="description"
       content="A live personal watchlist for historic aircraft associated with Hamilton's Canadian Warplane Heritage Museum."
     />
-    <meta property="og:site_name" content="Pelaxix" />
+    <meta property="og:site_name" content="Hamilton Warbird Watch" />
     <meta property="og:title" content="Hamilton Warbird Watch" />
     <meta
       property="og:description"
-      content="A small live watchlist for historic aircraft around Hamilton."
+      content="Live activity, scan history, and Discord alerts for historic aircraft around Hamilton."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://warbirds.pelaxix.com/" />
     <meta name="twitter:card" content="summary" />
-    <title>Hamilton Warbird Watch · Pelaxix</title>
+    <title>Hamilton Warbird Watch</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/project-nav.css" />
     <link rel="stylesheet" href="warbirds.css" />
-    <link rel="stylesheet" href="warbirds-compact.css" />
   </head>
   <body>
     <div class="app-shell">
-      <header class="site-header">
-        <a class="logo" href="/" aria-label="Pelaxix home">
-          <span class="logo-mark">P</span>
-          <span>Pelaxix</span>
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Hamilton Warbird Watch home">
+          <span class="brand-mark">✈</span>
+          <span>Hamilton Warbird Watch</span>
         </a>
-        <a class="back-link" href="/">← All projects</a>
+        <nav class="top-links" aria-label="Project navigation">
+          <a href="/history/">Scan history</a>
+          <a href="#watchlist">Tracked aircrafts</a>
+        </nav>
       </header>
 
       <main>
         <section class="hero" aria-labelledby="page-title">
           <div class="hero-copy">
+            <p class="eyebrow">Live ADS-B watchlist</p>
             <h1 id="page-title">Warbird Watch.</h1>
             <p class="hero-text">
               Live activity for historic aircraft around Hamilton. Discord alerts go out when one looks airborne.
             </p>
             <div class="hero-actions">
-              <button id="refreshButton" class="button primary" type="button">Refresh</button>
+              <button id="refreshButton" class="button primary" type="button">Refresh board</button>
               <a class="button secondary" href="/history/">Scan history</a>
-              <a class="button secondary" href="#watchlist">Watchlist</a>
+              <a class="button secondary" href="https://discord.gg/UKvVMMUG8" target="_blank" rel="noopener noreferrer">Join Discord</a>
             </div>
           </div>
+
+          <div class="radar-panel" aria-hidden="true">
+            <div class="radar-label">Hamilton area watch</div>
+            <div class="radar-face">
+              <span class="radar-ring ring-one"></span>
+              <span class="radar-ring ring-two"></span>
+              <span class="radar-ring ring-three"></span>
+              <span class="radar-sweep"></span>
+              <span class="radar-line"></span>
+              <span class="radar-blip blip-one"></span>
+              <span class="radar-blip blip-two"></span>
+              <span class="radar-plane">✈</span>
+            </div>
+            <div class="radar-footer">
+              <span>Data source</span>
+              <strong id="providerValue">adsb.fi</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="status-grid" aria-label="Watcher summary">
+          <article class="status-card status-card-main">
+            <span class="status-dot" id="statusDot"></span>
+            <div>
+              <span class="status-label">System</span>
+              <strong id="systemStatus">Starting up</strong>
+            </div>
+          </article>
+          <article class="status-card">
+            <span class="status-label">Last scan</span>
+            <strong id="lastCheckedValue">Waiting</strong>
+          </article>
+          <article class="status-card">
+            <span class="status-label">Active now</span>
+            <strong id="activeValue">0</strong>
+          </article>
+          <article class="status-card">
+            <span class="status-label">Tracked</span>
+            <strong id="trackedValue">10</strong>
+          </article>
+          <article class="status-card">
+            <span class="status-label">Cadence</span>
+            <strong>2 min scans</strong>
+          </article>
         </section>
 
         <section class="live-board" aria-labelledby="live-title">
@@ -78,45 +124,42 @@
             </article>
           </div>
 
-          <p class="live-note">
-            A quiet board means no watched aircraft were recently reported by the tracker. It does not prove an aircraft is grounded or unavailable.
-          </p>
-          <p class="discord-cta">
-            Want a ping when one goes live? <span><a href="https://discord.gg/UKvVMMUG8" target="_blank" rel="noopener noreferrer">Join our Discord for notifications.</a></span>
-          </p>
+          <div class="board-footer">
+            <p>A quiet board means no watched aircraft were recently reported by the tracker. It does not prove an aircraft is grounded or unavailable.</p>
+            <a href="https://discord.gg/UKvVMMUG8" target="_blank" rel="noopener noreferrer">Discord alerts →</a>
+          </div>
         </section>
 
         <section id="watchlist" class="watchlist-section" aria-labelledby="watchlist-title">
           <div class="section-heading roster-heading">
             <div>
               <p class="eyebrow">Watchlist</p>
-              <h2 id="watchlist-title">Tracked aircraft</h2>
+              <h2 id="watchlist-title">Tracked aircrafts</h2>
             </div>
-            <p class="section-copy">Checked every three minutes.</p>
+            <p class="section-copy">Checked every 2 minutes from 8 AM to 11 PM Hamilton time.</p>
           </div>
 
-          <ul class="watchlist-text">
-            <li><code>C-GVRA</code> Lancaster FM213</li>
-            <li><code>C-GRSB</code> Dakota FZ692</li>
-            <li><code>CF-GTU</code> Tiger Moth</li>
-            <li><code>C-GCWG</code> Grumman Avenger</li>
-            <li><code>CF-GSR</code> Norseman</li>
-            <li><code>C-GCWM</code> B-25 Mitchell</li>
-            <li><code>C-FPQL</code> Canso</li>
-            <li><code>C-FAIU</code> Stearman</li>
-            <li><code>CF-UUU</code> Harvard</li>
-            <li><code>C-GBDG</code> Fairey Firefly</li>
-          </ul>
+          <div class="manifest-list">
+            <article><code>C-GVRA</code><strong>Lancaster FM213</strong><span>Avro Lancaster Mk. X</span></article>
+            <article><code>C-GRSB</code><strong>Dakota FZ692</strong><span>Douglas C-47 Dakota</span></article>
+            <article><code>CF-GTU</code><strong>Tiger Moth</strong><span>de Havilland Tiger Moth</span></article>
+            <article><code>C-GCWG</code><strong>Grumman Avenger</strong><span>Grumman Avenger</span></article>
+            <article><code>CF-GSR</code><strong>Norseman</strong><span>Noorduyn Norseman</span></article>
+            <article><code>C-GCWM</code><strong>B-25 Mitchell</strong><span>North American B-25 Mitchell</span></article>
+            <article><code>C-FPQL</code><strong>Canso</strong><span>Consolidated Canso</span></article>
+            <article><code>C-FAIU</code><strong>Stearman</strong><span>Boeing Stearman</span></article>
+            <article><code>CF-UUU</code><strong>Harvard</strong><span>North American Harvard</span></article>
+            <article><code>C-GBDG</code><strong>Fairey Firefly</strong><span>Fairey Firefly</span></article>
+          </div>
         </section>
       </main>
 
       <footer>
         <p>Personal aviation project. Live ADS-B data can be delayed, incomplete, or unavailable.</p>
-        <a href="/">Pelaxix home</a>
+        <a href="/history/">Open scan history</a>
       </footer>
     </div>
 
     <script src="warbirds.js"></script>
-    <script src="warbirds-links.js"></script>
   </body>
 </html>
