@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Scan History · Hamilton Warbird Watch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="eyebrow">Hamilton Warbird Watch</p>
+        <h1>Scan History</h1>
+        <p class="hero-text">Every completed tracker scan from the recent history window.</p>
+        <div class="hero-actions">
+          <a class="button" href="/">Live board</a>
+        </div>
+      </section>
+
+      <section class="live-board" aria-labelledby="history-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">Last 48 hours</p>
+            <h2 id="history-title">Recent scans</h2>
+          </div>
+          <p id="historyStatus" class="section-copy">Loading history…</p>
+        </div>
+        <div id="historyList" class="history-list"></div>
+      </section>
+    </main>
+
+    <script src="/history/history.js" type="module"></script>
+  </body>
+</html>
