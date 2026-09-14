@@ -192,7 +192,7 @@ export async function runScan(source = "scheduled", options = {}) {
     return { ok: true, skipped: true, reason: "scan already in progress" };
   }
 
-  if (!options.ignoreWindow && source === "scheduled" && !insideActiveWindow()) {
+  if (config.activeHoursOnly && !options.ignoreWindow && source === "scheduled" && !insideActiveWindow()) {
     return { ok: true, skipped: true, reason: "outside active hours" };
   }
 
