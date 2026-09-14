@@ -1,34 +1,19 @@
 const api = "/api/public";
-const historyApi = "/api/history";
 const autoRefreshMs = 60 * 1000;
 
 const status = document.querySelector("#fetchStatus");
 const cards = document.querySelector("#liveCards");
-const refreshButton = document.querySelector("#refreshButton");
-const statusDot = document.querySelector("#statusDot");
-const systemStatus = document.querySelector("#systemStatus");
-const lastCheckedValue = document.querySelector("#lastCheckedValue");
-const activeValue = document.querySelector("#activeValue");
-const lastActivityValue = document.querySelector("#lastActivityValue");
-const trackedValue = document.querySelector("#trackedValue");
-const providerValue = document.querySelector("#providerValue");
 
 let isLoading = false;
 
-function setText(element, value) {
-  if (element) element.textContent = value;
-}
-
-function setSystem(kind, label) {
-  statusDot?.classList.remove("live", "active", "error");
-  statusDot?.classList.add(kind);
-  setText(systemStatus, label);
+function setStatus(text) {
+  if (status) status.textContent = text;
 }
 
 function since(value) {
   const timestamp = Date.parse(value);
 
-  if (!Number.isFinite(timestamp)) return "Waiting";
+  if (!Number.isFinite(timestamp)) return "checking…";
 
   const seconds = Math.max(0, Math.round((Date.now() - timestamp) / 1000));
 
@@ -37,19 +22,6 @@ function since(value) {
   if (seconds < 86400) return `${Math.round(seconds / 3600)} hr ago`;
 
   return `${Math.round(seconds / 86400)} days ago`;
-}
-
-function formatExactTime(value) {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) return "No completed scan yet";
-
-  return new Intl.DateTimeFormat(undefined, {
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(date);
 }
 
 function field(label, value) {
@@ -141,52 +113,6 @@ function getActive(payload) {
       : [];
 }
 
-function scanActivities(scan) {
-  const rawActivities = Array.isArray(scan?.activity)
-    ? scan.activity
-    : Array.isArray(scan?.activities)
-      ? scan.activities
-      : [];
-
-  return rawActivities
-    .map((item) => {
-      const type = String(item?.type ?? item?.event ?? "").toLowerCase();
-
-      return {
-        type,
-        aircraft:
-          item?.label ||
-          item?.aircraft ||
-          item?.registration ||
-          "Watched aircraft",
-        at: item?.at || scan?.at || scan?.timestamp || null,
-      };
-    })
-    .filter((item) => item.type === "detected" || item.type === "airborne");
-}
-
-function updateLastActivity(payload) {
-  const scans = Array.isArray(payload?.scans)
-    ? payload.scans
-    : Array.isArray(payload?.history)
-      ? payload.history
-      : [];
-
-  const activities = scans
-    .flatMap(scanActivities)
-    .sort((first, second) => Date.parse(second.at) - Date.parse(first.at));
-
-  const latest = activities[0];
-
-  if (!latest) {
-    setText(lastActivityValue, "None in 7 days");
-    return;
-  }
-
-  const action = latest.type === "airborne" ? "airborne" : "detected";
-  setText(lastActivityValue, `${latest.aircraft} ${action} · ${since(latest.at)}`);
-}
-
 function render(payload) {
   const active = getActive(payload);
 
@@ -205,55 +131,22 @@ function render(payload) {
   cards.replaceChildren(fragment);
 }
 
-function updateSummary(data) {
-  const active = getActive(data);
-  const activeCount = active.length;
-  const count = Number(data.trackedAircraft || data.watchedCount || 10);
+function updateScanStatus(data) {
   const checkedAt = data.checkedAt || data.lastCheckedAt;
-  const provider = data.provider || "adsb.fi";
-
-  setText(trackedValue, String(count));
-  setText(activeValue, String(activeCount));
-  setText(lastCheckedValue, since(checkedAt));
-  setText(providerValue, provider);
 
   if (data.lastError) {
-    setSystem("error", "Provider issue");
-    status.textContent = `Last scan failed · ${String(data.lastError).slice(0, 120)} · retrying every min`;
+    setStatus("Last scan failed. Retrying every min.");
     return;
   }
 
-  if (activeCount > 0) {
-    setSystem("active", `${activeCount} active`);
-    status.textContent = `${activeCount} of ${count} tracked · last scan ${formatExactTime(checkedAt)} · page updates every min`;
-    return;
-  }
-
-  setSystem("live", "Quiet / online");
-  status.textContent = `${count} tracked · last scan ${formatExactTime(checkedAt)} · page updates every min`;
-}
-
-async function loadHistorySnapshot() {
-  try {
-    const response = await window.fetch(historyApi, { cache: "no-store" });
-    if (!response.ok) throw new Error(`History returned ${response.status}`);
-
-    const data = await response.json();
-    if (!data.ok) throw new Error(data.error || "Invalid history response");
-
-    updateLastActivity(data);
-  } catch (error) {
-    console.warn("Warbird Watch history snapshot failed", error);
-    setText(lastActivityValue, "Unavailable");
-  }
+  setStatus(`Last scan: ${since(checkedAt)}`);
 }
 
 async function load() {
   if (isLoading) return;
 
   isLoading = true;
-  refreshButton?.setAttribute("disabled", "");
-  status.textContent = "Reading the most recent scan…";
+  setStatus("Last scan: checking…");
 
   try {
     const response = await window.fetch(api, { cache: "no-store" });
@@ -265,26 +158,19 @@ async function load() {
     if (!data.ok) throw new Error(data.error || "Invalid live status");
 
     render(data);
-    updateSummary(data);
-    loadHistorySnapshot();
+    updateScanStatus(data);
   } catch (error) {
     console.error("Warbird Watch live status failed", error);
-    setSystem("error", "Offline");
-    setText(lastCheckedValue, "Unavailable");
-    setText(lastActivityValue, "Unavailable");
     empty(
       "Live board unavailable",
       "The status feed could not be reached just now. It will try again automatically.",
       true,
     );
-    status.textContent = "Live status temporarily unavailable · retrying every min";
+    setStatus("Last scan: unavailable");
   } finally {
     isLoading = false;
-    refreshButton?.removeAttribute("disabled");
   }
 }
-
-refreshButton?.addEventListener("click", load);
 
 window.setInterval(() => {
   if (!document.hidden) load();
