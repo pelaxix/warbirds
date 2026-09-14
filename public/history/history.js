@@ -6,7 +6,7 @@ const scanCountValue = document.querySelector("#scanCountValue");
 const activityCountValue = document.querySelector("#activityCountValue");
 const autoRefreshMs = 60 * 1000;
 
-let showActivityOnly = false;
+let showActivityOnly = true;
 let allScans = [];
 let isLoading = false;
 
@@ -65,6 +65,10 @@ function scanActivities(scan) {
 
 function hasActivity(scan) {
   return scanActivities(scan).length > 0;
+}
+
+function activityCount(scans = allScans) {
+  return scans.reduce((total, scan) => total + scanActivities(scan).length, 0);
 }
 
 function scanKind(scan) {
@@ -155,22 +159,27 @@ function appendScanMessage(message, scan) {
 }
 
 function updateSummary() {
-  const activityCount = allScans.reduce((total, scan) => total + scanActivities(scan).length, 0);
-
   scanCountValue.textContent = String(allScans.length);
-  activityCountValue.textContent = String(activityCount);
+  activityCountValue.textContent = String(activityCount());
+}
+
+function updateFilterButton() {
+  activityFilter.classList.toggle("is-active", showActivityOnly);
+  activityFilter.setAttribute("aria-pressed", String(showActivityOnly));
+  activityFilter.textContent = showActivityOnly ? "Show all scans" : "Activity only";
 }
 
 function render() {
   const scans = showActivityOnly ? allScans.filter(hasActivity) : allScans;
 
   updateSummary();
+  updateFilterButton();
 
   if (!scans.length) {
     showEmpty(
-      showActivityOnly ? "No activity in this window" : "No scans recorded yet",
+      showActivityOnly ? "No aircraft activity in the last 7 days" : "No scans recorded yet",
       showActivityOnly
-        ? "Try showing all scans, or check back after an aircraft is detected."
+        ? "The tracker is still scanning every minute. Switch to all scans to see the quiet log."
         : "The first completed scan will appear here.",
     );
     return;
@@ -206,7 +215,7 @@ async function loadHistory() {
   if (isLoading) return;
 
   isLoading = true;
-  historyStatus.textContent = "Reading the last 48 hours of scans…";
+  historyStatus.textContent = "Reading the last 7 days of scans…";
 
   try {
     const response = await fetch(historyEndpoint, { cache: "no-store" });
@@ -229,8 +238,9 @@ async function loadHistory() {
 
     render();
 
+    const activities = activityCount();
     historyStatus.textContent = allScans.length
-      ? `${allScans.length} scan${allScans.length === 1 ? "" : "s"} recorded · last 48 hours · page updates every min`
+      ? `${activities} activit${activities === 1 ? "y" : "ies"} · ${allScans.length} scan${allScans.length === 1 ? "" : "s"} recorded · last 7 days · page updates every min`
       : "No scans recorded yet · page updates every min";
   } catch (error) {
     console.error("Could not load scan history", error);
@@ -248,9 +258,6 @@ async function loadHistory() {
 
 activityFilter.addEventListener("click", () => {
   showActivityOnly = !showActivityOnly;
-  activityFilter.classList.toggle("is-active", showActivityOnly);
-  activityFilter.setAttribute("aria-pressed", String(showActivityOnly));
-  activityFilter.textContent = showActivityOnly ? "Showing activity only" : "Activity only";
   render();
 });
 
@@ -262,4 +269,5 @@ document.addEventListener("visibilitychange", () => {
   if (!document.hidden) loadHistory();
 });
 
+updateFilterButton();
 loadHistory();
