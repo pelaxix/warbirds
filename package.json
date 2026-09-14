@@ -1,0 +1,14 @@
+{
+  "name": "warbirds",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Hamilton Warbird Watch home-server app",
+  "scripts": {
+    "start": "node src/server.js",
+    "check": "node --check src/server.js && node --check src/scanner.js && node --check src/adsb-one.js && node --check src/store.js && node --check src/config.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
