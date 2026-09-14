@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hamilton Warbird Watch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="eyebrow">Hamilton Warbird Watch</p>
+        <h1>Warbird Watch</h1>
+        <p class="hero-text">Live-ish tracker for historic aircraft around Hamilton, Ontario.</p>
+        <div class="hero-actions">
+          <a class="button" href="/history/">Scan history</a>
+          <a class="button ghost" href="https://discord.gg/UKvVMMUG8" target="_blank" rel="noopener noreferrer">Discord alerts</a>
+        </div>
+      </section>
+
+      <section class="live-board" aria-labelledby="live-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">Current board</p>
+            <h2 id="live-title">Live status</h2>
+          </div>
+          <p id="fetchStatus" class="section-copy">Loading latest scan…</p>
+        </div>
+        <div id="liveCards" class="cards"></div>
+      </section>
+
+      <section class="watchlist-section" aria-labelledby="watchlist-title">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">Watchlist</p>
+            <h2 id="watchlist-title">Tracked aircrafts</h2>
+          </div>
+          <p class="section-copy">Checked every 2 minutes from 8 AM to 11 PM Hamilton time.</p>
+        </div>
+        <ul class="watchlist-text">
+          <li><code>C-GVRA</code> Lancaster FM213</li>
+          <li><code>C-GRSB</code> Dakota FZ692</li>
+          <li><code>CF-GTU</code> Tiger Moth</li>
+          <li><code>C-GCWG</code> Grumman Avenger</li>
+          <li><code>CF-GSR</code> Norseman</li>
+          <li><code>C-GCWM</code> B-25 Mitchell</li>
+          <li><code>C-FPQL</code> Canso</li>
+          <li><code>C-FAIU</code> Stearman</li>
+          <li><code>CF-UUU</code> Harvard</li>
+          <li><code>C-GBDG</code> Fairey Firefly</li>
+        </ul>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
