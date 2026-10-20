@@ -1,0 +1,713 @@
+/* Warbird Watch / Aviation Heritage — experimental light theme
+   Backup: backup/pre-heritage-redesign-2026-10-20
+   Shared across /, /history/, and /watchlist/.
+   Page-specific legacy styles load first; this sheet is the unified final layer. */
+
+:root {
+  color-scheme: light;
+  --night: #f6f3ed;
+  --panel: #fffdf9;
+  --panel-soft: #e9e6df;
+  --ink: #26343c;
+  --muted: #596970;
+  --quiet: #6e7a7c;
+  --line: #d0d1ca;
+  --green: #49736d;
+  --orange: #b4583c;
+  --red: #b13f3c;
+  --accent: #a94e38;
+  --accent-dark: #813a2b;
+  --navy: #283b48;
+  --paper: #f6f3ed;
+  --cream: #fffdf9;
+  --shadow: none;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { display: none !important; }
+::selection { color: white; background: var(--accent); }
+h1, h2, h3 { margin-top: 0; color: var(--ink); }
+p { line-height: 1.55; }
+a { color: inherit; text-underline-offset: 0.2em; }
+button { font: inherit; }
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.app-shell {
+  width: min(1180px, calc(100% - 80px));
+  margin-inline: auto;
+}
+.topbar {
+  display: flex;
+  min-height: 0;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  gap: 20px;
+  padding: 24px 0 22px;
+  border-top: 3px solid var(--accent);
+  border-bottom: 1px solid var(--line);
+}
+.topbar .brand {
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  color: var(--navy);
+  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+  font-weight: 750;
+  letter-spacing: -0.065em;
+  line-height: 1.08;
+  white-space: nowrap;
+}
+.topbar .top-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 28px;
+  color: var(--navy);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.94rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+.topbar .top-links a,
+.topbar .top-links a:not([aria-current="page"]) {
+  color: var(--navy);
+}
+.topbar .top-links a:hover,
+.topbar .top-links a:not([aria-current="page"]):hover,
+.topbar .top-links a:focus-visible {
+  color: var(--accent);
+}
+.topbar .top-links a[aria-current="page"] {
+  color: var(--quiet);
+  opacity: 1;
+  pointer-events: none;
+  cursor: default;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.095em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+.display-serif,
+.hero-stage h1,
+.page-lede h1 {
+  font-family: "Newsreader", Georgia, serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+}
+.hero-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 0.93fr) minmax(0, 1.07fr);
+  align-items: stretch;
+  gap: 0;
+  margin: 28px 0 42px;
+  min-height: 318px;
+  background: #e9e4d9;
+}
+.hero-stage-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: clamp(26px, 4.5vw, 55px);
+}
+.hero-stage h1 {
+  margin: 0 0 13px;
+  font-size: clamp(3.2rem, 5.5vw, 5.3rem);
+  line-height: 0.99;
+  text-wrap: balance;
+}
+.hero-stage-copy > p:not(.eyebrow) {
+  max-width: 470px;
+  margin: 0 0 19px;
+  color: #42515a;
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  line-height: 1.62;
+}
+.editorial-link {
+  display: inline-block;
+  margin-top: 2px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--accent);
+  color: var(--accent-dark);
+  font-size: 0.94rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+.editorial-link:hover { color: var(--navy); border-color: var(--navy); }
+.hero-photo {
+  position: relative;
+  overflow: hidden;
+  min-height: 318px;
+  margin: 0;
+  background: #b6b1a4;
+}
+.hero-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 318px;
+  max-height: 420px;
+  object-fit: cover;
+  object-position: center;
+  filter: sepia(0.12) contrast(1.05) saturate(0.86);
+}
+.hero-photo figcaption {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  display: inline-block;
+  width: fit-content;
+  max-width: calc(100% - 24px);
+  padding: 6px 9px;
+  color: #fefcf8;
+  background: rgba(29,39,42,0.78);
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+.hero-photo figcaption a { text-decoration: underline; }
+
+.live-board,
+.watchlist-section,
+.history-panel {
+  border: 0;
+  border-radius: 0;
+  margin: 0 0 26px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.section-heading,
+.live-board .section-heading,
+.history-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.section-heading h2,
+.history-heading h2,
+.live-board h2 {
+  margin: 0;
+  color: var(--navy);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: clamp(2rem, 3.6vw, 3.05rem);
+  font-weight: 750;
+  line-height: 1.07;
+  letter-spacing: -0.065em;
+}
+.section-heading .eyebrow,
+.history-heading .eyebrow { margin-bottom: 7px; }
+.fetch-status,
+.history-status,
+.section-copy,
+.history-tools .history-status {
+  max-width: none;
+  margin: 0 0 4px;
+  padding: 0;
+  color: var(--muted);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.83rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-align: right;
+}
+.live-key {
+  display: flex;
+  gap: 22px;
+  margin: 19px 0 15px;
+  color: var(--muted);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.key-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 7px;
+  box-shadow: none !important;
+}
+.airborne-dot { background: var(--orange); }
+.detected-dot { background: var(--green); }
+.quiet-dot { background: var(--quiet); }
+
+.live-cards { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+.live-card,
+.empty-state {
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--cream);
+  box-shadow: none;
+}
+.empty-state {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 142px;
+  padding: 30px 36px;
+  gap: 0;
+  border-left: 4px solid #87989c;
+}
+.empty-state .empty-icon,
+.empty-state .quiet-radar { display: none; }
+.empty-state h3 {
+  margin: 0 0 5px;
+  color: var(--navy);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.empty-state p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.58;
+}
+.empty-state.error-state { border-left-color: var(--red); }
+.empty-state.loading-state { min-height: 142px; }
+.live-card {
+  position: relative;
+  overflow: visible;
+  padding: 26px;
+  min-height: 0;
+}
+.live-card.airborne::before {
+  top: 0; bottom: 0; left: 0; right: auto;
+  width: 4px;
+  height: auto;
+  background: var(--orange);
+  box-shadow: none;
+}
+.live-card.has-route-link { padding-bottom: 24px; }
+.live-card-head h3 {
+  max-width: none;
+  color: var(--navy);
+  font-size: clamp(1.35rem, 2.1vw, 1.85rem);
+  font-weight: 750;
+  line-height: 1.15;
+  letter-spacing: -0.045em;
+}
+.status-badge,
+.status-badge.airborne,
+.status-badge.detected {
+  border: 0;
+  border-radius: 0;
+  padding: 4px 0;
+  background: transparent;
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.77rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.status-badge.airborne { color: var(--orange); }
+.status-badge.detected { color: var(--green); }
+.live-card-meta { color: var(--muted); margin: 10px 0 20px; }
+.data-grid { gap: 18px 20px; }
+.data-grid span {
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.data-grid strong { color: var(--ink); font-size: 1.03rem; }
+.live-route-link {
+  display: inline-block;
+  position: static;
+  margin-top: 24px;
+  color: var(--accent);
+  font-size: 0.93rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+.live-route-link:hover { text-decoration: underline; color: var(--accent-dark); }
+
+.action-rail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 22px 0 36px;
+}
+.notification-cta, .museum-support {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 19px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 25px 27px;
+  box-shadow: none;
+}
+.notification-cta {
+  color: #fdfcf7;
+  background: var(--navy);
+}
+.museum-support {
+  background: #e6dfd2;
+}
+.notification-cta strong,
+.museum-support h2 {
+  display: block;
+  margin: 0 0 5px;
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+}
+.notification-cta strong { color: #fffaf4; }
+.notification-cta span {
+  color: #d9e0e1;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.museum-support h2 { color: var(--navy); }
+.museum-support-copy p {
+  margin: 0;
+  color: #5b635f;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.notification-cta a,
+.museum-support-link {
+  display: inline-flex;
+  width: auto;
+  min-height: 39px;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 9px 15px;
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.87rem;
+  font-weight: 750;
+  text-decoration: none;
+  transition: background .15s ease, color .15s ease;
+}
+.notification-cta a {
+  color: var(--navy);
+  background: #f9f4e8;
+}
+.notification-cta a:hover { color: var(--navy); background: #e8d6b6; transform: none; }
+.museum-support-link {
+  color: #fffaf5;
+  background: var(--accent);
+}
+.museum-support-link:hover { color: white; background: var(--accent-dark); }
+.notification-cta a:focus-visible { outline-color: #fffaf5; }
+
+.page-lede {
+  display: block;
+  padding: 51px 0 34px;
+}
+.page-lede .eyebrow { margin-bottom: 14px; }
+.page-lede h1 {
+  max-width: none;
+  margin: 0 0 13px;
+  font-size: clamp(3.25rem, 6vw, 5.7rem);
+  line-height: 1.0;
+}
+.page-lede .hero-copy,
+.page-lede .hero-text {
+  max-width: none;
+  margin: 0;
+  color: #4f5d64;
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: clamp(1.02rem, 1.7vw, 1.16rem);
+  line-height: 1.58;
+}
+.history-panel, .watchlist-section { padding-top: 6px; }
+.history-heading h2 { font-size: clamp(1.65rem, 3vw, 2.55rem); }
+.history-tools {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+.history-tools .button,
+.history-more {
+  min-height: 38px;
+  border: 1px solid #909b9f;
+  border-radius: 0;
+  padding: 8px 15px;
+  color: var(--navy);
+  background: transparent;
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.history-tools .button:hover,
+.history-more:hover { color: var(--accent); background: #efe8dd; border-color: var(--accent); transform: none; }
+.history-tools .button:disabled,
+.history-more:disabled { opacity: .55; cursor: wait; }
+.history-summary {
+  display: flex;
+  gap: 16px 33px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 19px 0;
+  border-top: 0;
+  border-bottom: 1px solid var(--line);
+}
+.history-summary article {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: none;
+}
+.history-summary span {
+  margin: 0;
+  color: var(--muted);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: .82rem;
+  font-weight: 550;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.history-summary strong { color: var(--navy); font-size: 1rem; font-weight: 800; }
+.history-list { margin: 0; border: 0; }
+.scan-row {
+  display: grid;
+  grid-template-columns: 176px minmax(0, 1fr) 96px;
+  gap: 17px;
+  align-items: baseline;
+  border-bottom: 1px solid var(--line);
+  padding: 17px 0;
+}
+.scan-row:hover { background: #eeebe5; }
+.scan-time,
+.scan-tag {
+  color: var(--muted);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.81rem;
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.scan-message {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.99rem;
+  line-height: 1.45;
+}
+.scan-tag { justify-self: end; border: 0; padding: 0; font-weight: 700; }
+.scan-row.airborne .scan-tag, .status-word.airborne, .status-word.takeoff { color: var(--orange); }
+.scan-row.detected .scan-tag, .status-word.detected { color: var(--green); }
+.scan-row.error .scan-tag, .status-word.error { color: var(--red); }
+.scan-row.landed .scan-tag, .scan-row.reacquired .scan-tag,
+.status-word.landed, .status-word.reacquired { color: var(--muted); }
+.history-list .empty-state {
+  margin: 20px 0 0;
+  min-height: 135px;
+  padding: 28px;
+  background: var(--cream);
+}
+.history-list .empty-state h3 { font-size: clamp(1.65rem, 3vw, 2.2rem); }
+.history-list .empty-state p { font-size: 0.95rem; }
+.history-pagination { display: flex; justify-content: center; padding: 22px 0; }
+.history-pagination[hidden] { display: none; }
+
+.collection-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px 25px;
+  flex-wrap: wrap;
+  padding: 0 0 22px;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.87rem;
+}
+.collection-meta strong { color: var(--accent); font-weight: 750; }
+.watchlist-section.detail-section { margin: 0; padding: 0; border: none; }
+.aircraft-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 0 36px;
+  counter-reset: aircraft;
+  margin: 0;
+}
+.aircraft-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 239px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 25px 45px 21px 0;
+  background: transparent;
+  box-shadow: none;
+  transition: background .15s ease;
+}
+.aircraft-card::before {
+  position: absolute;
+  top: 25px;
+  right: 3px;
+  color: #9b9f9a;
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 650;
+  content: counter(aircraft, decimal-leading-zero);
+  counter-increment: aircraft;
+}
+.aircraft-card:hover,
+.aircraft-card:focus-visible { background: #eee9e0; transform: none; border-color: var(--line); box-shadow: none; }
+.aircraft-code {
+  display: block;
+  width: fit-content;
+  margin: 0 0 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--accent);
+  background: none;
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: .77rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.aircraft-card strong {
+  margin: 0 0 3px;
+  color: var(--navy);
+  font-family: "Newsreader", Georgia, serif;
+  font-size: clamp(1.7rem, 2.7vw, 2.3rem);
+  font-weight: 550;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+.aircraft-model {
+  color: var(--muted);
+  font-size: 0.91rem;
+  line-height: 1.5;
+  opacity: 1;
+}
+.aircraft-card p {
+  max-width: none;
+  margin: 14px 0 18px;
+  color: #495961;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.aircraft-footer {
+  display: inline-block;
+  position: static;
+  margin-top: auto;
+  color: var(--accent);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 750;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.aircraft-card:hover .aircraft-footer { text-decoration: underline; }
+.watchlist-section + .museum-support {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  margin: 29px 0 34px;
+}
+
+footer {
+  margin: 40px 0 0;
+  padding: 22px 0 38px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 0.78rem;
+}
+footer p { max-width: none; margin: 0; line-height: 1.5; }
+
+@media (max-width: 900px) {
+  .app-shell { width: min(100% - 44px, 1180px); }
+  .hero-stage { grid-template-columns: 1fr 1fr; }
+  .hero-stage-copy { padding: 30px; }
+  .hero-stage h1 { font-size: clamp(3rem, 6vw, 4.35rem); }
+  .topbar .top-links { gap: 16px; }
+}
+@media (max-width: 680px) {
+  .app-shell { width: min(100% - 32px, 1180px); }
+  .topbar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 17px 0 18px;
+  }
+  .topbar .brand { font-size: 1.98rem; }
+  .topbar .top-links { justify-content: flex-start; gap: 20px; font-size: 0.88rem; }
+  .hero-stage { display: flex; flex-direction: column; margin: 21px 0 28px; }
+  .hero-stage-copy { padding: 27px 24px 25px; }
+  .hero-stage h1 { font-size: clamp(2.95rem, 13vw, 4.2rem); }
+  .hero-photo, .hero-photo img { min-height: 192px; max-height: 245px; }
+  .hero-photo img { height: 220px; }
+  .section-heading, .live-board .section-heading, .history-heading {
+    display: block;
+    padding-bottom: 16px;
+  }
+  .section-heading h2, .history-heading h2, .live-board h2 { font-size: 2.25rem; }
+  .fetch-status, .section-copy, .history-status { margin: 11px 0 0; text-align: left; }
+  .live-key { gap: 17px; margin: 17px 0 13px; }
+  .empty-state { padding: 25px 22px; min-height: 130px; }
+  .empty-state h3 { font-size: 2.15rem; }
+  .live-cards, .aircraft-grid { grid-template-columns: 1fr; }
+  .live-card { padding: 23px; }
+  .action-rail { grid-template-columns: 1fr; gap: 12px; margin-bottom: 26px; }
+  .notification-cta, .museum-support { padding: 22px 23px; }
+  .notification-cta a, .museum-support-link { width: auto; margin: 0; }
+  .page-lede { padding: 35px 0 27px; }
+  .page-lede h1 { font-size: clamp(3.4rem, 14vw, 4.8rem); }
+  .history-tools { align-items: flex-start; margin-top: 16px; }
+  .history-tools .history-status { margin-top: 0; text-align: left; }
+  .history-summary { gap: 8px 20px; }
+  .scan-row { grid-template-columns: minmax(0,1fr) auto; gap: 5px 12px; }
+  .scan-time { grid-column: 1; }
+  .scan-message { grid-column: 1; }
+  .scan-tag { grid-column: 2; grid-row: 1 / span 2; }
+  .aircraft-card { min-height: 222px; padding: 24px 40px 22px 0; }
+  .watchlist-section + .museum-support { flex-direction: column; align-items: flex-start; }
+  footer { margin-top: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+}
