@@ -5,10 +5,19 @@ const historyList = document.querySelector("#historyList");
 const scanCountValue = document.querySelector("#scanCountValue");
 const activityCountValue = document.querySelector("#activityCountValue");
 const autoRefreshMs = 60 * 1000;
+const pageSize = 80;
+const loadMoreButton = document.querySelector("#loadMoreHistory");
+const historyPagination = document.querySelector("#historyPagination");
 
 let showActivityOnly = true;
 let allScans = [];
 let isLoading = false;
+let hasMore = false;
+let nextBefore = null;
+let totalScans = 0;
+let totalActivities = 0;
+let lastCheckedAt = null;
+let browsingOlderScans = false;
 
 function getScanTime(scan) {
   return scan.at || scan.timestamp || null;
@@ -159,8 +168,10 @@ function appendScanMessage(message, scan) {
 }
 
 function updateSummary() {
-  scanCountValue.textContent = String(allScans.length);
-  activityCountValue.textContent = String(activityCount());
+  scanCountValue.textContent = String(totalScans);
+  activityCountValue.textContent = String(totalActivities);
+  historyPagination.hidden = !hasMore;
+  loadMoreButton.textContent = showActivityOnly ? "Load older sightings" : "Load older scans";
 }
 
 function updateFilterButton() {
@@ -211,62 +222,77 @@ function render() {
   historyList.replaceChildren(fragment);
 }
 
-async function loadHistory() {
-  if (isLoading) return;
+async function loadHistory({ append = false, silent = false } = {}) {
+  if (isLoading || (append && (!hasMore || !nextBefore))) return;
 
   isLoading = true;
-  historyStatus.textContent = "Reading the last 7 days of scans…";
+  activityFilter.disabled = true;
+  loadMoreButton.disabled = true;
+  if (!silent) historyStatus.textContent = append ? "Loading older records…" : "Loading recent history…";
 
   try {
-    const response = await fetch(historyEndpoint, { cache: "no-store" });
+    const params = new URLSearchParams({
+      view: showActivityOnly ? "activity" : "all",
+      limit: String(pageSize),
+    });
+    if (append) params.set("before", nextBefore);
 
-    if (!response.ok) throw new Error(`History returned ${response.status}`);
+    const response = await fetch(historyEndpoint + "?" + params.toString(), { cache: "no-store" });
+    if (!response.ok) throw new Error("History returned " + response.status);
 
     const payload = await response.json();
+    if (!payload.ok || !Array.isArray(payload.scans)) {
+      throw new Error(payload.error || "Invalid history response");
+    }
 
-    if (!payload.ok) throw new Error(payload.error || "Invalid history response");
-
-    allScans = Array.isArray(payload.scans)
-      ? payload.scans
-      : Array.isArray(payload.history)
-        ? payload.history
-        : [];
-
-    allScans.sort(
-      (first, second) => Date.parse(getScanTime(second)) - Date.parse(getScanTime(first)),
-    );
+    allScans = append ? allScans.concat(payload.scans) : payload.scans;
+    hasMore = Boolean(payload.hasMore);
+    nextBefore = payload.nextBefore || null;
+    totalScans = Number(payload.totalScans) || 0;
+    totalActivities = Number(payload.totalActivities) || 0;
+    lastCheckedAt = payload.checkedAt;
+    browsingOlderScans = append || (silent && browsingOlderScans);
 
     render();
-
-    const activities = activityCount();
-    historyStatus.textContent = allScans.length
-      ? `Latest scan: ${formatTimestamp(getScanTime(allScans[0]))} · refreshes every minute`
+    historyStatus.textContent = totalScans
+      ? "Latest scan: " + formatTimestamp(lastCheckedAt) + (browsingOlderScans ? " · older records loaded" : " · refreshes every minute")
       : "No scans recorded yet · refreshes every minute";
   } catch (error) {
     console.error("Could not load scan history", error);
-    showEmpty(
-      "Scan history is not online yet",
-      "The history page is ready, but the local API could not be reached just now.",
-    );
-    scanCountValue.textContent = "—";
-    activityCountValue.textContent = "—";
-    historyStatus.textContent = "Waiting for the local API · retrying every min";
+    if (!append && !silent) {
+      showEmpty("Scan history unavailable", "Could not reach the local API. The page will retry automatically.");
+      scanCountValue.textContent = "—";
+      activityCountValue.textContent = "—";
+      historyPagination.hidden = true;
+    }
+    historyStatus.textContent = "Could not load history · retrying shortly";
   } finally {
     isLoading = false;
+    activityFilter.disabled = false;
+    loadMoreButton.disabled = false;
   }
 }
 
 activityFilter.addEventListener("click", () => {
+  if (isLoading) return;
   showActivityOnly = !showActivityOnly;
-  render();
+  allScans = [];
+  hasMore = false;
+  nextBefore = null;
+  browsingOlderScans = false;
+  updateFilterButton();
+  loadHistory();
 });
 
+loadMoreButton.addEventListener("click", () => loadHistory({ append: true }));
+
 window.setInterval(() => {
-  if (!document.hidden) loadHistory();
+  // Don't interrupt someone scrolling through older entries.
+  if (!document.hidden && !browsingOlderScans) loadHistory({ silent: true });
 }, autoRefreshMs);
 
 document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) loadHistory();
+  if (!document.hidden && !browsingOlderScans) loadHistory({ silent: true });
 });
 
 updateFilterButton();
