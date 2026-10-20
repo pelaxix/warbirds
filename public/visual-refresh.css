@@ -551,3 +551,10 @@ footer p { max-width: 700px; margin: 0; }
   opacity: 0.55;
   cursor: wait;
 }
+
+/* Flight-session events: data colour only, never another decorative badge. */
+.scan-row.landed .scan-tag,
+.status-word.landed { color: var(--muted); }
+.scan-row.reacquired .scan-tag,
+.status-word.reacquired { color: var(--muted); }
+.status-word.takeoff { color: var(--orange); }
