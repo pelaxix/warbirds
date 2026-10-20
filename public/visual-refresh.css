@@ -65,7 +65,7 @@ p { line-height: 1.55; }
 
 .intro-line { padding: 26px 0 34px; }
 .intro-line p {
-  max-width: 750px;
+  max-width: none;
   margin: 0;
   color: var(--ink);
   font-size: clamp(1.1rem, 2.35vw, 1.42rem);
@@ -259,7 +259,7 @@ p { line-height: 1.55; }
   line-height: 1.04;
 }
 .page-lede .hero-copy, .page-lede .hero-text {
-  max-width: 690px;
+  max-width: none;
   margin: 0;
   color: var(--muted);
   font-size: 1.07rem;
