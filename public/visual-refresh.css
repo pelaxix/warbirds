@@ -26,6 +26,17 @@ body {
 body::before { display: none; }
 ::selection { background: var(--green); color: var(--night); }
 a { text-underline-offset: 0.22em; }
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 a:focus-visible, button:focus-visible {
   outline: 2px solid var(--green);
   outline-offset: 4px;
