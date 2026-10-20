@@ -69,7 +69,7 @@ function scanActivities(scan) {
           "Watched aircraft",
       };
     })
-    .filter((item) => item.type === "detected" || item.type === "airborne");
+    .filter((item) => ["detected", "airborne", "takeoff", "landed", "reacquired"].includes(item.type));
 }
 
 function hasActivity(scan) {
@@ -85,7 +85,9 @@ function scanKind(scan) {
 
   const activities = scanActivities(scan);
 
-  if (activities.some((item) => item.type === "airborne")) return "airborne";
+  if (activities.some((item) => item.type === "takeoff" || item.type === "airborne")) return "airborne";
+  if (activities.some((item) => item.type === "landed")) return "landed";
+  if (activities.some((item) => item.type === "reacquired")) return "reacquired";
   if (activities.length) return "detected";
 
   return "quiet";
@@ -94,8 +96,10 @@ function scanKind(scan) {
 function scanTag(scan) {
   const kind = scanKind(scan);
 
-  if (kind === "airborne") return "Airborne";
+  if (kind === "airborne") return scanActivities(scan).some((item) => item.type === "takeoff") ? "New flight" : "Airborne";
   if (kind === "detected") return "Detected";
+  if (kind === "landed") return "Landed";
+  if (kind === "reacquired") return "Signal found";
   if (kind === "error") return "Error";
   return "Quiet";
 }
@@ -125,7 +129,14 @@ function appendActivityMessage(message, activities) {
 
     const status = document.createElement("span");
     status.className = `status-word ${activity.type}`;
-    status.textContent = activity.type === "airborne" ? "airborne" : "detected";
+    const labels = {
+      takeoff: "new flight",
+      airborne: "airborne",
+      detected: "detected",
+      landed: "landed",
+      reacquired: "signal reacquired",
+    };
+    status.textContent = labels[activity.type] || activity.type;
     message.append(status);
   });
 }
@@ -188,7 +199,7 @@ function render() {
 
   if (!scans.length) {
     showEmpty(
-      showActivityOnly ? "No aircraft activity in the last 7 days" : "No scans recorded yet",
+      showActivityOnly ? "No aircraft events in the last 7 days" : "No scans recorded yet",
       showActivityOnly
         ? "The tracker is still scanning every minute. Switch to all scans to see the quiet log."
         : "The first completed scan will appear here.",
