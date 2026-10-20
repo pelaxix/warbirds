@@ -25,7 +25,7 @@ function sendJson(response, statusCode, payload) {
     "Content-Type": "application/json; charset=utf-8",
     "Cache-Control": "no-store",
   });
-  response.end(JSON.stringify(payload, null, 2));
+  response.end(JSON.stringify(payload));
 }
 
 function sendText(response, statusCode, text) {
@@ -129,7 +129,15 @@ async function handleRequest(request, response) {
     }
 
     if (url.pathname === "/api/history") {
-      sendJson(response, 200, await getHistory());
+      const view = url.searchParams.get("view");
+      const options = view === "activity" || view === "all"
+        ? {
+            view,
+            limit: url.searchParams.get("limit"),
+            before: url.searchParams.get("before"),
+          }
+        : {};
+      sendJson(response, 200, await getHistory(options));
       return;
     }
 
