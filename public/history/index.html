@@ -17,6 +17,7 @@
     />
     <link rel="stylesheet" href="/history/history.css" />
     <link rel="stylesheet" href="/site-header.css" />
+    <link rel="stylesheet" href="/visual-refresh.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -30,25 +31,22 @@
       </header>
 
       <main>
-        <section class="hero">
-          <p class="eyebrow">Last 7 days</p>
-          <h1>History</h1>
-          <p class="hero-copy">
-            Aircraft activity is shown first. Use the toggle to see every quiet scan too.
-          </p>
-          <div class="hero-actions">
-            <a class="button secondary" href="/">Live board</a>
-            <button id="activityFilter" class="button secondary is-active" type="button" aria-pressed="true">Show all scans</button>
-          </div>
+        <section class="page-lede" aria-labelledby="page-title">
+          <p class="eyebrow">Past seven days</p>
+          <h1 id="page-title">Flight log.</h1>
+          <p class="hero-copy">Detections and airborne sightings from the watchlist. Browse the activity or view every minute-by-minute scan.</p>
         </section>
 
         <section class="history-panel" aria-labelledby="history-title">
           <div class="history-heading">
             <div>
-              <p class="eyebrow">Timeline</p>
-              <h2 id="history-title">Recent activity</h2>
+              <p class="eyebrow">The record</p>
+              <h2 id="history-title">Recent sightings</h2>
             </div>
-            <p id="historyStatus" class="history-status" role="status">Loading scan history…</p>
+            <div class="history-tools">
+              <button id="activityFilter" class="button secondary is-active" type="button" aria-pressed="true">Show all scans</button>
+              <p id="historyStatus" class="history-status" role="status">Loading scan history…</p>
+            </div>
           </div>
 
           <div class="history-summary" aria-label="History summary">
@@ -59,10 +57,9 @@
 
           <div id="historyList" class="history-list" aria-live="polite">
             <article class="empty-state">
-              <span class="empty-icon">⌁</span>
               <div>
-                <h3>Loading scans</h3>
-                <p>The recent scan log is on its way.</p>
+                <h3>Loading the flight log.</h3>
+                <p>Looking up recent activity.</p>
               </div>
             </article>
           </div>
