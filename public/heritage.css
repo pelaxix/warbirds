@@ -128,11 +128,11 @@ button:focus-visible, a:focus-visible {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: clamp(24px, 3.2vw, 42px);
+  padding: clamp(23px, 2.6vw, 32px);
 }
 .hero-stage h1 {
   margin: 0 0 11px;
-  font-size: clamp(3rem, 4.8vw, 4.65rem);
+  font-size: clamp(2.9rem, 4.35vw, 4rem);
   line-height: 1.0;
   text-wrap: balance;
 }
