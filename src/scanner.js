@@ -364,7 +364,7 @@ function historyActivityItems(scan) {
 
   return items.filter((item) => {
     const type = String(item?.type ?? item?.event ?? "").toLowerCase();
-    return type === "airborne" || type === "detected";
+    return ["airborne", "detected", "takeoff", "landed", "reacquired"].includes(type);
   });
 }
 
