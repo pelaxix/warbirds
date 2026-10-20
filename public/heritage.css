@@ -45,7 +45,7 @@ button:focus-visible, a:focus-visible {
   outline-offset: 4px;
 }
 .app-shell {
-  width: min(1180px, calc(100% - 80px));
+  width: min(1280px, calc(100% - 80px));
   margin-inline: auto;
 }
 .topbar {
@@ -659,14 +659,14 @@ footer {
 footer p { max-width: none; margin: 0; line-height: 1.5; }
 
 @media (max-width: 900px) {
-  .app-shell { width: min(100% - 44px, 1180px); }
+  .app-shell { width: min(100% - 44px, 1280px); }
   .hero-stage { grid-template-columns: 1fr 1fr; }
   .hero-stage-copy { padding: 30px; }
   .hero-stage h1 { font-size: clamp(3rem, 6vw, 4.35rem); }
   .topbar .top-links { gap: 16px; }
 }
 @media (max-width: 680px) {
-  .app-shell { width: min(100% - 32px, 1180px); }
+  .app-shell { width: min(100% - 32px, 1280px); }
   .topbar {
     display: flex;
     flex-direction: column;
