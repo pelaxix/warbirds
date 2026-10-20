@@ -100,7 +100,7 @@ function showEmpty(title, description) {
 
   card.className = "empty-state";
   icon.className = "empty-icon";
-  icon.textContent = "⌁";
+  icon.textContent = "";
   heading.textContent = title;
   text.textContent = description;
   content.append(heading, text);
@@ -240,8 +240,8 @@ async function loadHistory() {
 
     const activities = activityCount();
     historyStatus.textContent = allScans.length
-      ? `${activities} activit${activities === 1 ? "y" : "ies"} · ${allScans.length} scan${allScans.length === 1 ? "" : "s"} recorded · last 7 days · page updates every min`
-      : "No scans recorded yet · page updates every min";
+      ? `Latest scan: ${formatTimestamp(getScanTime(allScans[0]))} · refreshes every minute`
+      : "No scans recorded yet · refreshes every minute";
   } catch (error) {
     console.error("Could not load scan history", error);
     showEmpty(
