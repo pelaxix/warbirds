@@ -325,16 +325,81 @@ export async function getPublicStatus() {
   };
 }
 
-export async function getHistory() {
-  const state = await readState();
-  const now = Date.now();
+function historyActivityItems(scan) {
+  const items = Array.isArray(scan.activities)
+    ? scan.activities
+    : Array.isArray(scan.activity)
+      ? scan.activity
+      : scan.event
+        ? (scan.aircraft || scan.liveMatches || []).map((item) => ({ ...item, type: scan.event }))
+        : [];
+
+  return items.filter((item) => {
+    const type = String(item?.type ?? item?.event ?? "").toLowerCase();
+    return type === "airborne" || type === "detected";
+  });
+}
+
+function compactHistoryScan(scan, activities) {
+  const aircraft = Array.isArray(scan.aircraft)
+    ? scan.aircraft
+    : Array.isArray(scan.liveMatches)
+      ? scan.liveMatches
+      : [];
 
   return {
+    at: scan.at,
+    ...(scan.error ? { error: scan.error } : {}),
+    activities: activities.map((item) => ({
+      type: String(item.type ?? item.event).toLowerCase(),
+      label: item.label || item.aircraft || item.registration || "Watched aircraft",
+    })),
+    aircraft: aircraft.map((item) => ({
+      label: item.label || item.aircraft || item.registration || "Watched aircraft",
+    })),
+  };
+}
+
+// Without options this keeps the original API response for existing clients.
+// The History page requests compact, server-filtered pages instead of a week's raw scans.
+export async function getHistory(options = {}) {
+  const state = await readState();
+  const now = Date.now();
+  const history = trimHistory(state.history || [], now);
+  const common = {
     ok: true,
     checkedAt: state.checkedAt,
     lastError: state.lastError,
     windowHours: Math.round(config.historyWindowMs / 60 / 60 / 1000),
-    scans: trimHistory(state.history || [], now),
+  };
+
+  if (options.view !== "activity" && options.view !== "all") {
+    return { ...common, scans: history };
+  }
+
+  const limit = Math.min(200, Math.max(1, Number.parseInt(options.limit, 10) || 80));
+  const records = history.map((scan) => ({ scan, activities: historyActivityItems(scan) }));
+  const totalActivities = records.reduce((sum, record) => sum + record.activities.length, 0);
+  const matches = options.view === "activity"
+    ? records.filter((record) => record.activities.length > 0)
+    : records;
+  const beforeTime = Date.parse(options.before || "");
+  const eligible = Number.isFinite(beforeTime)
+    ? matches.filter((record) => Date.parse(record.scan.at) < beforeTime)
+    : matches;
+  const newestFirst = eligible.reverse();
+  const page = newestFirst.slice(0, limit);
+  const scans = page.map(({ scan, activities }) => compactHistoryScan(scan, activities));
+  const hasMore = newestFirst.length > page.length;
+
+  return {
+    ...common,
+    scans,
+    totalScans: history.length,
+    totalActivities,
+    matchingScans: matches.length,
+    hasMore,
+    nextBefore: hasMore ? scans[scans.length - 1].at : null,
   };
 }
 
