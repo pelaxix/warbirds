@@ -521,3 +521,33 @@ footer p { max-width: 700px; margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* History paging: never build thousands of scan rows unless someone asks for them. */
+.history-pagination {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 12px;
+}
+.history-pagination[hidden] { display: none; }
+.history-more {
+  min-height: 44px;
+  padding: 10px 22px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--ink);
+  background: var(--panel);
+  font-family: Inter, system-ui, sans-serif;
+  font-size: 0.94rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.history-more:hover,
+.history-more:focus-visible {
+  border-color: var(--green);
+  color: var(--green);
+}
+.history-more:disabled,
+.history-tools .button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
