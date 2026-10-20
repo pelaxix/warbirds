@@ -558,3 +558,79 @@ footer p { max-width: 700px; margin: 0; }
 .scan-row.reacquired .scan-tag,
 .status-word.reacquired { color: var(--muted); }
 .status-word.takeoff { color: var(--orange); }
+
+/* A direct, non-affiliated link to the museum's own donation page. */
+.museum-support {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 24px 42px;
+  margin: 34px 0 42px;
+  border-top: 1px solid var(--line);
+  padding: 38px 0 6px;
+}
+
+.museum-support .eyebrow {
+  margin-bottom: 11px;
+  color: var(--green);
+}
+
+.museum-support h2 {
+  max-width: 660px;
+  margin: 0 0 16px;
+  font-size: clamp(2rem, 4.8vw, 3.45rem);
+  font-weight: 750;
+  line-height: 1.07;
+  letter-spacing: -0.055em;
+}
+
+.museum-support-copy > p:not(.eyebrow) {
+  max-width: 585px;
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.museum-support-copy .museum-support-note {
+  margin-top: 17px !important;
+  color: var(--muted) !important;
+  font-size: 0.84rem !important;
+}
+
+.museum-support-link {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  border: 1px solid var(--green);
+  border-radius: 3px;
+  padding: 12px 17px;
+  color: var(--green);
+  font-size: 0.92rem;
+  font-weight: 750;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.museum-support-link:hover,
+.museum-support-link:focus-visible {
+  color: var(--night);
+  background: var(--green);
+}
+
+@media (max-width: 760px) {
+  .museum-support {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+    padding-top: 28px;
+    margin: 28px 0 32px;
+  }
+
+  .museum-support-link {
+    width: 100%;
+    max-width: 380px;
+  }
+}
