@@ -118,8 +118,9 @@ button:focus-visible, a:focus-visible {
   grid-template-columns: minmax(0, 0.93fr) minmax(0, 1.07fr);
   align-items: stretch;
   gap: 0;
-  margin: 28px 0 42px;
-  min-height: 318px;
+  margin: 25px 0 34px;
+  height: 306px;
+  min-height: 0;
   background: #e9e4d9;
 }
 .hero-stage-copy {
@@ -127,19 +128,19 @@ button:focus-visible, a:focus-visible {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: clamp(26px, 4.5vw, 55px);
+  padding: clamp(24px, 3.2vw, 42px);
 }
 .hero-stage h1 {
-  margin: 0 0 13px;
-  font-size: clamp(3.2rem, 5.5vw, 5.3rem);
-  line-height: 0.99;
+  margin: 0 0 11px;
+  font-size: clamp(3rem, 4.8vw, 4.65rem);
+  line-height: 1.0;
   text-wrap: balance;
 }
 .hero-stage-copy > p:not(.eyebrow) {
   max-width: 470px;
-  margin: 0 0 19px;
+  margin: 0 0 15px;
   color: #42515a;
-  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  font-size: clamp(0.98rem, 1.22vw, 1.06rem);
   line-height: 1.62;
 }
 .editorial-link {
@@ -156,7 +157,8 @@ button:focus-visible, a:focus-visible {
 .hero-photo {
   position: relative;
   overflow: hidden;
-  min-height: 318px;
+  height: 100%;
+  min-height: 0;
   margin: 0;
   background: #b6b1a4;
 }
@@ -164,8 +166,8 @@ button:focus-visible, a:focus-visible {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 318px;
-  max-height: 420px;
+  min-height: 0;
+  max-height: none;
   object-fit: cover;
   object-position: center;
   filter: sepia(0.12) contrast(1.05) saturate(0.86);
@@ -660,9 +662,9 @@ footer p { max-width: none; margin: 0; line-height: 1.5; }
 
 @media (max-width: 900px) {
   .app-shell { width: min(100% - 44px, 1280px); }
-  .hero-stage { grid-template-columns: 1fr 1fr; }
-  .hero-stage-copy { padding: 30px; }
-  .hero-stage h1 { font-size: clamp(3rem, 6vw, 4.35rem); }
+  .hero-stage { grid-template-columns: 1fr 1fr; height: 310px; }
+  .hero-stage-copy { padding: 28px; }
+  .hero-stage h1 { font-size: clamp(2.85rem, 6vw, 4.15rem); }
   .topbar .top-links { gap: 16px; }
 }
 @media (max-width: 680px) {
@@ -676,11 +678,11 @@ footer p { max-width: none; margin: 0; line-height: 1.5; }
   }
   .topbar .brand { font-size: 1.98rem; }
   .topbar .top-links { justify-content: flex-start; gap: 20px; font-size: 0.88rem; }
-  .hero-stage { display: flex; flex-direction: column; margin: 21px 0 28px; }
-  .hero-stage-copy { padding: 27px 24px 25px; }
-  .hero-stage h1 { font-size: clamp(2.95rem, 13vw, 4.2rem); }
-  .hero-photo, .hero-photo img { min-height: 192px; max-height: 245px; }
-  .hero-photo img { height: 220px; }
+  .hero-stage { display: flex; flex-direction: column; height: auto; margin: 21px 0 28px; }
+  .hero-stage-copy { padding: 25px 24px 23px; }
+  .hero-stage h1 { font-size: clamp(2.95rem, 12vw, 4.1rem); }
+  .hero-photo { height: 205px; min-height: 0; max-height: none; }
+  .hero-photo img { height: 100%; min-height: 0; max-height: none; }
   .section-heading, .live-board .section-heading, .history-heading {
     display: block;
     padding-bottom: 16px;
