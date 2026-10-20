@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="/notification-cta.css" />
     <link rel="stylesheet" href="/homepage-cleanup.css" />
     <link rel="stylesheet" href="/site-header.css" />
+    <link rel="stylesheet" href="/visual-refresh.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -42,14 +43,14 @@
 
       <main>
         <section class="intro-line" aria-label="About Warbird Watch">
-          <p>Live activity for historic aircraft around Hamilton. Alerts go out when one looks airborne.</p>
+          <p>Following ten historic aircraft around Hamilton. See what’s been spotted in the latest scan.</p>
         </section>
 
         <section class="live-board" aria-labelledby="live-title">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Live board</p>
-              <h1 id="live-title">Current status</h1>
+              <p class="eyebrow">Hamilton, Ontario · Live board</p>
+              <h1 id="live-title">Live activity</h1>
             </div>
             <p id="fetchStatus" class="fetch-status" role="status">Last scan: checking…</p>
           </div>
@@ -62,18 +63,17 @@
 
           <div id="liveCards" class="live-cards" aria-live="polite">
             <article class="empty-state loading-state">
-              <span class="empty-icon">⌁</span>
               <div>
-                <h3>Checking the latest scan</h3>
-                <p>Loading the most recently reported aircraft activity.</p>
+                <h3>Checking the skies.</h3>
+                <p>Loading the latest aircraft signals.</p>
               </div>
             </article>
           </div>
 
           <div class="notification-cta">
             <div>
-              <strong>Want live notifications?</strong>
-              <span>Join the Discord to get alerts when one of the watched aircraft looks airborne.</span>
+              <strong>Want aircraft alerts?</strong>
+              <span>Get a Discord notification when a watched aircraft looks airborne.</span>
             </div>
             <a href="https://discord.gg/AQj2BFPA6s" target="_blank" rel="noopener noreferrer">Join Discord</a>
           </div>
