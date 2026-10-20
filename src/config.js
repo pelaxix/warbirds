@@ -80,6 +80,7 @@ export const config = Object.freeze({
   activeStartHour: intEnv("ACTIVE_START_HOUR", 0),
   activeEndHourExclusive: intEnv("ACTIVE_END_HOUR", 24),
   resetAfterMs: intEnv("RESET_AFTER_MINUTES", 30) * 60 * 1000,
+  flightSilenceMs: intEnv("FLIGHT_SILENCE_MINUTES", 90) * 60 * 1000,
   airborneMinSpeedKt: intEnv("AIRBORNE_MIN_SPEED_KT", 50),
   historyWindowMs: intEnv("HISTORY_WINDOW_HOURS", 168) * 60 * 60 * 1000,
   historyMaxEntries: intEnv("HISTORY_MAX_ENTRIES", 12000),
