@@ -12,6 +12,7 @@ function defaultState() {
     checkedAt: null,
     lastError: null,
     current: {},
+    flightSessions: {},
     history: [],
   };
 }
@@ -28,6 +29,7 @@ export async function readState() {
       ...defaultState(),
       ...state,
       current: state.current && typeof state.current === "object" ? state.current : {},
+      flightSessions: state.flightSessions && typeof state.flightSessions === "object" && !Array.isArray(state.flightSessions) ? state.flightSessions : {},
       history: Array.isArray(state.history) ? state.history : [],
     };
   } catch (error) {
