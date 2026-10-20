@@ -118,8 +118,8 @@ function render(payload) {
 
   if (!active.length) {
     empty(
-      "Quiet skies right now",
-      "No watched aircraft were recently reported by the tracker. That is normal most days.",
+      "Quiet skies.",
+      "No aircraft from the watchlist were reported in the latest scan.",
     );
     return;
   }
