@@ -21,7 +21,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/warbirds.css" />
@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="/homepage-cleanup.css" />
     <link rel="stylesheet" href="/site-header.css" />
     <link rel="stylesheet" href="/visual-refresh.css" />
+    <link rel="stylesheet" href="/heritage.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -42,15 +43,24 @@
       </header>
 
       <main>
-        <section class="intro-line" aria-label="About Warbird Watch">
-          <p>Following ten historic aircraft around Hamilton. See what’s been spotted in the latest scan.</p>
+        <section class="hero-stage" aria-labelledby="hero-title">
+          <div class="hero-stage-copy">
+            <p class="eyebrow">Hamilton, Ontario · Historic aircraft tracking</p>
+            <h1 id="hero-title">History still flies.</h1>
+            <p>Following ten aircraft from the Canadian Warplane Heritage Museum. See when one takes to the skies.</p>
+            <a class="editorial-link" href="/watchlist/">Meet the aircraft <span aria-hidden="true">↗</span></a>
+          </div>
+          <figure class="hero-photo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/ed/Lancaster_MkX_Canadian_Warplane_Heritage_Museum_2.jpg" alt="The museum’s Avro Lancaster outside its hangar at Hamilton airport" loading="eager" decoding="async" />
+            <figcaption>Lancaster FM213 · Photo: <a href="https://commons.wikimedia.org/wiki/File:Lancaster_MkX_Canadian_Warplane_Heritage_Museum_2.jpg" target="_blank" rel="noopener noreferrer">Balcer</a> (<a href="https://creativecommons.org/licenses/by/2.5/" target="_blank" rel="noopener noreferrer">CC BY 2.5</a>)</figcaption>
+          </figure>
         </section>
 
         <section class="live-board" aria-labelledby="live-title">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Hamilton, Ontario · Live board</p>
-              <h1 id="live-title">Live activity</h1>
+              <p class="eyebrow">Live signals · Updated every minute</p>
+              <h2 id="live-title">Live aircraft</h2>
             </div>
             <p id="fetchStatus" class="fetch-status" role="status">Last scan: checking…</p>
           </div>
@@ -70,6 +80,9 @@
             </article>
           </div>
 
+        </section>
+
+        <div class="action-rail" aria-label="Stay connected and support the museum">
           <div class="notification-cta">
             <div>
               <strong>Want aircraft alerts?</strong>
@@ -77,9 +90,8 @@
             </div>
             <a href="https://discord.gg/AQj2BFPA6s" target="_blank" rel="noopener noreferrer">Join Discord</a>
           </div>
-        </section>
 
-        <section class="museum-support" aria-labelledby="museum-support-title">
+          <section class="museum-support" aria-labelledby="museum-support-title">
           <div class="museum-support-copy">
             <h2 id="museum-support-title">Help keep the warbirds flying.</h2>
             <p>Support the Canadian Warplane Heritage Museum and its aircraft preservation work.</p>
@@ -87,7 +99,8 @@
           <a class="museum-support-link" href="https://www.warplane.com/donate/online.aspx" target="_blank" rel="noopener noreferrer">
             Donate to the museum <span aria-hidden="true">↗</span>
           </a>
-        </section>
+          </section>
+        </div>
       </main>
 
       <footer>
