@@ -1,9 +1,13 @@
 import { config } from "./config.js";
 import { fetchByRegistrations, normalizeHex, normalizeRegistration } from "./adsb-one.js";
 import { readState, withState } from "./store.js";
+import { advanceFlightSession, DEFAULT_FLIGHT_RULES, seedFlightSession } from "./flight-sessions.js";
 
 let scanInProgress = false;
 let timer = null;
+
+// Ignore stale provider reports when deciding flight transitions.
+const MAX_OBSERVATION_AGE_MS = 3 * 60 * 1000;
 
 function iso(ms = Date.now()) {
   return new Date(ms).toISOString();
@@ -30,11 +34,18 @@ function isGroundAltitude(value) {
 }
 
 function numericAltitude(aircraft) {
-  const baro = Number(aircraft?.alt_baro);
-  if (Number.isFinite(baro)) return baro;
+  // Number(null) is zero; a missing altitude is not a valid flight altitude.
+  const baroValue = aircraft?.alt_baro;
+  if (baroValue !== null && baroValue !== undefined && String(baroValue).trim() !== "") {
+    const baro = Number(baroValue);
+    if (Number.isFinite(baro)) return baro;
+  }
 
-  const geom = Number(aircraft?.alt_geom);
-  if (Number.isFinite(geom)) return geom;
+  const geomValue = aircraft?.alt_geom;
+  if (geomValue !== null && geomValue !== undefined && String(geomValue).trim() !== "") {
+    const geom = Number(geomValue);
+    if (Number.isFinite(geom)) return geom;
+  }
 
   return null;
 }
@@ -65,6 +76,13 @@ function isActiveRecord(record, now = Date.now()) {
 
   const lastSeen = Date.parse(record.lastSeenAt);
   return Number.isFinite(lastSeen) && now - lastSeen <= config.resetAfterMs;
+}
+
+function hasFreshSignal(match, now) {
+  const seenAt = Date.parse(match.lastSeenAt);
+  return Number.isFinite(seenAt)
+    && seenAt <= now + 30 * 1000
+    && now - seenAt <= MAX_OBSERVATION_AGE_MS;
 }
 
 function currentHamiltonHour(date = new Date()) {
@@ -208,23 +226,32 @@ export async function runScan(source = "scheduled", options = {}) {
     const result = await withState(async (state) => {
       const now = Date.now();
       const current = { ...state.current };
+      const flightSessions = { ...(state.flightSessions || {}) };
+      const rules = { ...DEFAULT_FLIGHT_RULES, maxFlightSilenceMs: config.flightSilenceMs };
 
       for (const match of matches) {
         const key = normalizeRegistration(match.registration);
         const previous = current[key];
         const previousActive = isActiveRecord(previous, now);
-        const firstSeenInSession = !previousActive;
-        const becameAirborne = previousActive && !previous.airborne && match.airborne;
 
-        if (firstSeenInSession) {
-          activities.push(createActivity(match.airborne ? "airborne" : "detected", match));
-        } else if (becameAirborne) {
-          activities.push(createActivity("airborne", match));
+        if (hasFreshSignal(match, now)) {
+          // Upgrade existing state without turning an ongoing flight into a new alert.
+          const session = flightSessions[key]
+            || seedFlightSession(previous, rules.maxFlightSilenceMs, now);
+          const result = advanceFlightSession(session, {
+            at: match.lastSeenAt,
+            airborne: match.airborne,
+            grounded: match.altitude === "Ground",
+          }, rules);
+          if (result.session) flightSessions[key] = result.session;
+          for (const type of result.events) {
+            activities.push(createActivity(type, match));
+          }
         }
 
         current[key] = {
           ...match,
-          firstSeenAt: firstSeenInSession ? iso(now) : previous.firstSeenAt,
+          firstSeenAt: !previousActive ? iso(now) : previous.firstSeenAt,
           lastSeenAt: match.lastSeenAt,
           updatedAt: iso(now),
         };
@@ -244,11 +271,12 @@ export async function runScan(source = "scheduled", options = {}) {
         checkedAt: scan.at,
         lastError: null,
         current,
+        flightSessions,
         history: trimHistory([...(state.history || []), scan], now),
       };
     });
 
-    for (const activity of activities.filter((item) => item.type === "airborne")) {
+    for (const activity of activities.filter((item) => item.type === "takeoff")) {
       const match = matches.find((item) => item.registration === activity.registration);
       try {
         if (await sendDiscordAlert(activity, match)) {
